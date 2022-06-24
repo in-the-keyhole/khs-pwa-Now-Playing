@@ -1,5 +1,5 @@
 import React from 'react'
-import AuthButton from '../components/AuthButton'
+
 const MovieHeader = ({ searchText, search }) =>
 	<header>
 		<h3>PWA Now Playing</h3>
@@ -11,7 +11,7 @@ const MovieHeader = ({ searchText, search }) =>
 				type="text"
 				placeholder="Search..."
 			/>
-			<AuthButton />
+			<a href="/login">Logout</a>
 		</div>
 	</header>
 

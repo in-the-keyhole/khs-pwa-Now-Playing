@@ -1,62 +1,51 @@
 import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import api from '../api/instance'
+import {getMovie} from '../api/instance'
 
 class MovieDetail extends Component {
-  constructor(props) {
-    super(props)
-    this.state = { movie: null, loading: true }
-  }
+	constructor(props) {
+		super(props)
+		this.state = { error: null, movie: null, loading: true }
+	}
 
-  componentDidMount = async () => {
-    try {
-      const response = await api.get(`movies/${this.props.match.params.id}`)
-      const movie = response.data
-      this.setState(() => ({ movie, loading: false }))
-    } catch (e) {
-      this.setState(() => ({ error: true, loading: false }))
-    }
-  }
+	componentDidMount = async () => {
+		const path = window.location.pathname.split('/');
+		const id = path.pop();
 
-  render() {
-    // object destructuring thanks to ES6
-    const { movie, loading, error } = this.state
-    const { history } = this.props // react-router-dom provides us with history in props
+		const movie = await getMovie(id);
+		const error = movie ? false : true;
+		this.setState(() => ({ movie, error, loading: false }))
+	}
 
-    if (loading) {
-      return <h1>Loading...</h1>
-    }
+	render() {
+		const { movie, loading, error } = this.state
+		const { history } = this.props // react-router-dom provides us with history in props
 
-    if (error) {
-      return (
-        <h4>
-          Oops! Movie details couldn't be loaded.{' '}
-          <a style={{ cursor: 'pointer' }} onClick={() => history.goBack()}>
-            Go back.
-          </a>
-        </h4>
-      )
-    }
-
-    return (
-      <div className="movie-detail">
-        <h3>
-          {movie.title}
-        </h3>
-        <h4>
-          {movie.overview}
-        </h4>
-        <Link to="/">
-          <span className="close" />
-        </Link>
-        <img
-          src={`${process.env
-            .PUBLIC_URL}/images/backdrops${movie.backdrop_path}`}
-          alt={`Backdrop for ${movie.backdrop_path}`}
-        />
-      </div>
-    )
-  }
+		if (loading) {
+			return <h1 className="msg">Loading...</h1>
+		} else if (error) {
+			return (
+				<h4 className="msg">
+					Oops! Movie details couldn't be loaded.
+					<br />
+					<a href="/">Go back.</a>
+				</h4>
+			)
+		} else {
+			return (
+				<div className="movie-detail">
+					<div className="info">
+						<h3>{movie.title}</h3>
+						<h4>{movie.overview}</h4>
+					</div>
+					<a href="/" className="close"></a>
+					<img
+						src={`${process.env.PUBLIC_URL}/images/backdrops${movie.backdrop_path}`}
+						alt={`Backdrop for ${movie.title}`}
+					/>
+				</div>
+			)
+		}
+	}
 }
 
 export default MovieDetail

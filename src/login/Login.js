@@ -1,67 +1,38 @@
 import React, { Component } from 'react'
-import LoginForm from './LoginForm'
-import { Redirect } from 'react-router-dom'
 import './login-styles.css'
-import { authenticate } from '../services/authService'
 
-/**
- * this is a container component, as it 
- * handles state and merely passes props down to its children
- */
 export default class Login extends Component {
-  constructor(props) {
-    super(props)
-    this.state = {
-      redirectToReferrer: false,
-      loginError: false
-    }
-  }
+	constructor(props) {
+		super(props)
+	}
 
-  // hooray for async/await
-  login = async values => {
-    try {
-      await authenticate(values)
-      this.setState(() => ({ redirectToReferrer: true, loginError: false }))
-    } catch (e) {
-      this.setState(() => ({ loginError: e }))
-    }
-  }
+	login = (e) => {
+		e.preventDefault();
+		window.location = '/';
+	}
 
-  render() {
-    const { from } = this.props.location.state || { from: { pathname: '/' } }
-    const { redirectToReferrer, loginError } = this.state;
-    // prefer ternaries - they require you to handle else
-    // in react, this is preferred so you explicity return
-    // what react is expecting (components/objects)
-    return redirectToReferrer
-      ? <Redirect to={from} />
-      : <div>
-          <img
-            className="logo"
-            src={`${process.env.PUBLIC_URL}/images/logo.gif`}
-            alt=""
-          />
-          <div id="page-wrap">
-            {loginError &&
-              <div>
-                <p className="text-danger">Username or password is invalid.</p>
-                <p className="text-info">
-                  Hint: username/password => jdoe/password
-                </p>
-              </div>}
-            <LoginForm
-              login={this.login}
-              user={{ username: 'jdoe', password: 'password' }}
-            />
-          </div>
+	render() {
+		return (
+			<div>
+				<img className="logo" src="/images/logo.gif" alt="Logo"/>
+				<div id="login-form">
+					<form onSubmit={this.login} className="form-group">
+				    <label className="form-label" htmlFor="username">Username:
+				      <input type="text" id="username" name="username" className="form-control" />
+				    </label>
+				    <label className="form-label" htmlFor="password">Password:
+				      <input type="password" id="password" name="password" className="form-control" />
+				    </label>
+				    <button type="submit" className="btn btn-primary">
+				      Login
+				    </button>
+				  </form>
+				</div>
 
-          <div id="bg">
-            <img
-              src={`${process.env
-                .PUBLIC_URL}/images/backdrops/login-backdrop.jpg`}
-              alt=""
-            />
-          </div>
-        </div>
-  }
+				<div id="bg">
+					<img src="/images/backdrops/login-backdrop.jpg" alt="Login backdrop" />
+				</div>
+			</div>
+		)
+	}
 }

@@ -1,8 +1,17 @@
 import axios from 'axios'
 
 const instance = axios.create({
-  baseURL: 'http://'+location.hostname+':3001/api/',
-  headers: { 'Content-Type': 'application/json' }
-})
+	baseURL: 'http://'+location.hostname+':3000/mocks/',
+	headers: { 'Content-Type': 'application/json' }
+});
 
-export default instance
+export const getMovies = () => {
+	return instance.get('movies.json');
+}
+
+export const getMovie = async (id) => {
+	const response = await getMovies();
+	const { results: movies } = response.data;
+	const movie = movies.find(m => m.id == id);
+	return movie;
+}

@@ -8,13 +8,24 @@ h2 {
 	font-size: 1.2em;
 	text-transform: uppercase;
 }
+a {
+	color: #17a2b8;
+	text-decoration: none;
+}
+a:hover {
+	color: #1ebcc5;
+	text-decoration: none;
+}
+.msg {
+	margin: 15px;
+	text-align: center;
+}
 
+.movie-container {
+	margin: 0 15px;
+}
 
 .movie-container ul {
-	display: -webkit-box;
-	display: -moz-box;
-	display: -ms-flexbox;
-	display: -webkit-flex;
 	display: flex;
 	flex-flow: row wrap;
 	justify-content: center;
@@ -31,7 +42,7 @@ h2 {
 	display: flex;
 	flex-direction: row;
 	justify-content: space-between;
-	margin: 15px;
+	margin: 15px 0;
 }
 .movie-container header div {
 	display: flex;
@@ -42,17 +53,21 @@ h2 {
 	color: #fff;
 }
 
-.movie-container header button {
+.movie-container header a {
 	background-color: black;
-	border: none;
+	border: 1px solid transparent;
 	color: white;
-	height: 33px;
+	height: 42px;
 	font-weight: bold;
 	line-height: 21px;
+	margin: 0 0 0 10px;
+	padding: 10px;
+	text-decoration: none;
 }
 
-.movie-container header button:hover {
+.movie-container header a:hover {
 	border: 1px solid rgb(238, 238, 238);
+	cursor: pointer;
 }
 
 .movie {
@@ -68,10 +83,6 @@ h2 {
 	display: block;
 }
 
-.movie-detail {
-	position: relative;
-}
-
 .movie-header {
 	text-align: left;
 }
@@ -80,20 +91,17 @@ h2 {
 	width: 30%;
 }
 
+.movie-detail {
+	position: relative;
+}
 .movie-detail img {
 	width: 100%;
 }
 
-.movie-detail h3 {
+.movie-detail .info {
+	bottom: 0px;
+	padding: 30px;
 	position: absolute;
-	left: 50px;
-	bottom: 100px;
-}
-
-.movie-detail h4 {
-	position: absolute;
-	left: 50px;
-	bottom: 25px;
 }
 
 .movie-detail span {
@@ -106,11 +114,11 @@ h2 {
 }
 
 .close {
-	position: relative;
-	display: inline-block;
-	width: 50px;
 	height: 50px;
-	overflow: hidden;
+	margin: 10px;
+	position: absolute;
+	right: 0;
+	width: 50px;
 }
 
 .close::before {
@@ -146,3 +154,4 @@ h2 {
 .close:hover::after {
 	background: #1ebcc5;
 }
+
