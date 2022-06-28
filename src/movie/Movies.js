@@ -3,6 +3,9 @@ import '../App.css'
 import Header from './MovieHeader'
 import MovieList from './MovieList'
 import {getMovies} from '../api/instance'
+import { GetMovies } from './GqlMovies';
+
+const USE_JSON = 0;
 
 class Movies extends Component {
 	constructor(props) {
@@ -11,13 +14,15 @@ class Movies extends Component {
 	}
 
 	componentDidMount = async () => {
-		try {
-			const response = await getMovies();
-			const { results: movies } = response.data
-			this.setState(() => ({ movies, filteredMovies: movies, loading: false }))
-		} catch (e) {
-			console.error(e)
-			this.setState(() => ({ error: 'Cannot fetch movies', loading: false }))
+		if (USE_JSON) {
+			try {
+				const response = await getMovies();
+				const { results: movies } = response.data
+				this.setState(() => ({ movies, filteredMovies: movies, loading: false }))
+			} catch (e) {
+				console.error(e)
+				this.setState(() => ({ error: 'Cannot fetch movies', loading: false }))
+			}
 		}
 	}
 
@@ -38,12 +43,14 @@ class Movies extends Component {
 		return (
 			<div className="movie-container">
 				<Header searchText={searchText} search={this.search} />
-				{ loading ? (
+				{ USE_JSON && loading ? (
 					<p className="msg">Loading movies...</p>
-				) : error ? (
+				) : USE_JSON && error ? (
 					<p className="msg">{error}</p>
-				) : (
+				) : USE_JSON ? (
 					<MovieList movies={filteredMovies} />
+				) : (
+					<GetMovies />
 				)}
 			</div>
 		)

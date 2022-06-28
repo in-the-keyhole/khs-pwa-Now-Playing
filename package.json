@@ -30,7 +30,7 @@
   "scripts": {
     "startreact": "react-scripts start",
     "start": "npm-run-all --parallel api startreact",
-    "api": "node api/server",
+    "api": "node",
     "build": "react-scripts build",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"

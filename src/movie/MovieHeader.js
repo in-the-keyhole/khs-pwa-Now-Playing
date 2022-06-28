@@ -1,4 +1,5 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 const MovieHeader = ({ searchText, search }) =>
 	<header>
@@ -11,7 +12,7 @@ const MovieHeader = ({ searchText, search }) =>
 				type="text"
 				placeholder="Search..."
 			/>
-			<a href="/login">Logout</a>
+			<Link to="/login">Logout</Link>
 		</div>
 	</header>
 

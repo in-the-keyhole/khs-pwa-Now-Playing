@@ -8,7 +8,7 @@ const MovieList = ({ movies }) =>
 					<li key={movie.id}>
 						<Movie
 							title={movie.title}
-							poster={movie.poster_path}
+							poster={`/images/posters${movie.poster_path}`}
 							id={movie.id}
 						/>
 					</li>

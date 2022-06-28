@@ -3,10 +3,10 @@ const cacheName = 'nowplaying-V1';
 
 //populate this array to cache assets upon initial load
 const contentToCache = [
-	'/images/posters/nHXiMnWUAUba2LZ0dFkNDVdvJ1o.jpg',
-	'/images/posters/gri0DDxsERr6B2sOR1fGLxLpSLx.jpg',
-	'/images/posters/h6O5OE3ueRVdCc7V7cwTiQocI7D.jpg',
-	'/images/posters/u7igWoek5Xckz7mkIorYE5pMusI.jpg',
+	// '/images/posters/nHXiMnWUAUba2LZ0dFkNDVdvJ1o.jpg',
+	// '/images/posters/gri0DDxsERr6B2sOR1fGLxLpSLx.jpg',
+	// '/images/posters/h6O5OE3ueRVdCc7V7cwTiQocI7D.jpg',
+	// '/images/posters/u7igWoek5Xckz7mkIorYE5pMusI.jpg',
 	// '/images/posters/z4x0Bp48ar3Mda8KiPD1vwSY3D8.jpg',
 	// '/images/posters/xfWac8MTYDxujaxgPVcRD9yZaul.jpg',
 	// '/images/posters/tgfRDJs5PFW20Aoh1orEzuxW8cN.jpg',
@@ -28,6 +28,7 @@ const contentToCache = [
 //any request url that should not be cached
 const cacheBlacklist = [
 	'/favicon.ico',
+	'graphql'
 	//'/api/nowPlaying'
 ];
 
@@ -47,7 +48,7 @@ if (PWA) {
 		e.respondWith((async () => {
 			const r = await caches.match(e.request);
 			if (r) {
-	    	console.log(`[Service Worker] Fetching cached resource!!!!!!: ${e.request.url}`);
+	    	console.log(`[Service Worker] Fetching cached resource: ${e.request.url}`);
 				return r;
 			}
 			const response = await fetch(e.request);
@@ -62,10 +63,12 @@ if (PWA) {
 		})());
 	});
 
+
 	self.addEventListener('activate', (event) => {
 		console.log("[Service Worker] Deleting old caches...");
 		event.waitUntil(deleteOldCaches());
 	});
+
 }
 
 const deleteCache = async key => {
