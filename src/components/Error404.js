@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
+import { Link } from "react-router-dom";
+import Header from "./Header";
 
-export default class Error404 extends Component {
-  constructor(props) {
-    super(props);
-  }
+const Error404 = () => {
+	return (
+		<>
+			<Header />
+			<div className="msg">
+				<h1>404 Unknown</h1>
+				<Link to="/">Return to movie listing</Link>
+			</div>
+		</>
+	);
+};
 
-  render() {
-    return (
-      <div className="msg">
-        <h1>404 Unknown</h1>
-        <a href="/">Return to movie listing</a>
-      </div>
-    );
-  }
-}
+export default Error404;

@@ -1,12 +1,22 @@
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
 	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
 	background-color: #000 !important;
 	color: #fff !important;
 }
-
 h2 {
-	font-size: 1.2em;
+	font-size: 2rem;
+	margin: 0;
 	text-transform: uppercase;
+}
+h3 {
+	font-size: 1.8rem;
+}
+h4 {
+	font-size: 1.3rem;
 }
 a {
 	color: #17a2b8;
@@ -16,6 +26,46 @@ a:hover {
 	color: #1ebcc5;
 	text-decoration: none;
 }
+
+header h3 {
+	margin: 5px 0 0 0;
+}
+header {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin: 15px 0;
+}
+header div {
+	display: flex;
+}
+
+header input {
+	background: #000;
+	color: #fff;
+	padding: 5px;
+}
+header input:disabled {
+	opacity: 0.5;
+}
+
+header a {
+	background-color: black;
+	border: 1px solid transparent;
+	color: white;
+	font-weight: bold;
+	line-height: 21px;
+	margin: 0 0 0 10px;
+	padding: 10px;
+	text-decoration: none;
+}
+
+header a:hover {
+	border: 1px solid rgb(238, 238, 238);
+	color: white;
+	cursor: pointer;
+}
+
 .msg {
 	margin: 15px;
 	text-align: center;
@@ -37,45 +87,11 @@ a:hover {
 .movie-container li {
 	position: relative;
 }
-.movie-container header h3 {
-	margin: 5px 0 0 0;
-}
-.movie-container header {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	margin: 15px 0;
-}
-.movie-container header div {
-	display: flex;
-}
 
-.movie-container header input {
-	background: #000;
-	color: #fff;
-	padding: 5px;
-}
-
-.movie-container header a {
-	background-color: black;
-	border: 1px solid transparent;
-	color: white;
-	font-weight: bold;
-	line-height: 21px;
-	margin: 0 0 0 10px;
-	padding: 10px;
-	text-decoration: none;
-}
-
-.movie-container header a:hover {
-	border: 1px solid rgb(238, 238, 238);
-	cursor: pointer;
-}
 
 .movie {
 	padding: 5px;
 	margin-top: 10px;
-
 	font-weight: bold;
 	text-align: center;
 	cursor: pointer;
@@ -85,15 +101,8 @@ a:hover {
 	display: block;
 }
 
-.movie-header {
-	text-align: left;
-}
-
-.movie-header img {
-	width: 30%;
-}
-
 .movie-detail {
+	min-height: 350px;
 	position: relative;
 }
 .movie-detail img {

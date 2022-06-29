@@ -1,5 +1,18 @@
-const PWA = 0;
-const cacheName = 'nowplaying-V1';
+//search params can be passed in from register function in /src/index.js
+const search = self.location.search.substr(1).toLowerCase();
+const params = search.split('&');
+
+//if exactly 'pwa=1' appears in the search params, allow PWA functionality
+const PWA = params.includes('pwa=1');
+
+//check for a cache name in search params
+//if not present, default to 'nowPlaying-V1'
+let cName = null;
+const cacheParam = params.find(p => p.includes('cache_name='));
+if (cacheParam) {
+	cName = cacheParam.split('cache_name=')[1];
+}
+const cacheName = cName ? 'nowPlaying-'+cName : 'nowPlaying-V1';
 
 //populate this array to cache assets upon initial load
 const contentToCache = [
