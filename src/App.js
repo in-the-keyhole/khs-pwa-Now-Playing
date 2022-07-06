@@ -11,13 +11,10 @@ const App = () => {
 	return (
 		<BrowserRouter>
 			<Routes>
-				<Route exact path="login" element={<Login />} />
-				<Route element={
-					<PrivateRoute redirectPath='login' />}>
-						<Route path="/" element={<Movies />} />
-						<Route exact path="/about/:id" element={<MovieDetail />
-					}
-				/>
+				<Route path="/" element={<Login />} />
+				<Route element={ <PrivateRoute redirectPath='' />}>
+					<Route path="/movies" element={<Movies />} />
+					<Route path="/about/:id" element={<MovieDetail />} />
 				</Route>
 				<Route path="*" element={<Error404 />} />
 			</Routes>

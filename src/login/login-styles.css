@@ -1,16 +1,16 @@
 #bg {
+	height: 200%;
 	position: fixed;
 	top: -50%;
 	left: -50%;
 	width: 200%;
-	height: 200%;
 }
 #bg img {
 	position: absolute;
-	top: 0;
+	bottom: 0;
 	left: 0;
 	right: 0;
-	bottom: 0;
+	top: 0;
 	margin: auto;
 	min-width: 50%;
 	min-height: 50%;
@@ -25,16 +25,17 @@
 }
 
 #login-form {
-	color: black;
-	position: relative;
-	z-index: 2;
-	width: 400px;
-	margin: 50px auto;
-	padding: 20px;
 	background: white;
+	box-shadow: 0 0 20px black;
+	color: black;
+	margin: 50px auto;
+	max-width: 400px;
+	padding: 20px;
+	position: relative;
+	width: 90%;
+	z-index: 2;
 	-moz-box-shadow: 0 0 20px black;
 	-webkit-box-shadow: 0 0 20px black;
-	box-shadow: 0 0 20px black;
 }
 
 #login-form button {
@@ -47,19 +48,19 @@
 }
 	
 #login-form input {
-	display: block;
-	width: 100%;
-	padding: 0.375rem 0.75rem;
-	font-size: 1rem;
-	font-weight: 400;
-	line-height: 1.5;
-	color: #212529;
+	appearance: none;
 	background-color: #fff;
 	background-clip: padding-box;
 	border: 1px solid #ced4da;
-	appearance: none;
 	border-radius: 0.25rem;
+	color: #212529;
+	display: block;
+	font-size: 1rem;
+	font-weight: 400;
+	line-height: 1.5;
+	padding: 0.375rem 0.75rem;	
 	transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+	width: 100%;
 }
 
 #login-form button {
@@ -84,3 +85,4 @@
 #login-form button:hover {
 	background-color: #639bef;
 }
+

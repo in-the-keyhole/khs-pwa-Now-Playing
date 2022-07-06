@@ -1,5 +1,5 @@
 *, *::before, *::after {
-    box-sizing: border-box;
+	box-sizing: border-box;
 }
 
 body {
@@ -170,3 +170,19 @@ header a:hover {
 	background: #1ebcc5;
 }
 
+
+@media only screen and (max-width: 600px) {
+	header {
+		flex-direction: column;
+	}
+	header h2 {
+		text-align: center;
+	}
+	header div {
+		justify-content: space-between;
+		margin: 10px;
+	}
+	.movie-detail .info {
+		bottom: -300px;
+	}
+}

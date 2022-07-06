@@ -1,9 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./login-styles.css";
+import { LS_PREFIX } from "../config";
 
 const Login = () => {
-	localStorage.removeItem('KHS-PWA|authUser');
+	//localStorage.removeItem(LS_PREFIX+'authUser');
+	localStorage.clear();
 	const navigate = useNavigate();
 
 	const [loginError, setLoginError] = useState(false);
@@ -13,8 +15,8 @@ const Login = () => {
 		const username = e.target.username.value;
 		const password = e.target.password.value;
 		if (username && password) {
-			localStorage.setItem('KHS-PWA|authUser', true);
-			navigate('/');
+			localStorage.setItem(LS_PREFIX+'authUser', true);
+			navigate('/movies');
 		} else {
 			setLoginError(true);
 		}

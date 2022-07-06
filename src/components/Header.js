@@ -6,14 +6,13 @@ const Header = ({searchText, search, disabled=true}) => {
 			<h2>PWA Now Playing</h2>
 			<div>
 				<input
-					autoFocus
 					value={searchText}
 					onChange={search}
 					type="text"
 					placeholder="Search..."
 					disabled={disabled}
 				/>
-				<Link to="/login">Logout</Link>
+				<Link to="/">Logout</Link>
 			</div>
 		</header>
 	)
