@@ -1,0 +1,197 @@
+<!doctype html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="shortcut icon" href="/favicon.ico">
+		<link rel="manifest" href="/manifest.json">
+
+		<!-- ios support -->
+		<link rel="apple-touch-icon" href="/images/icons/icon-32.png" />
+		<link rel="apple-touch-icon" href="/images/icons/icon-72.png" />
+		<link rel="apple-touch-icon" href="/images/icons/icon-96.png" />
+		<link rel="apple-touch-icon" href="/images/icons/icon-128.png" />
+		<link rel="apple-touch-icon" href="/images/icons/icon-144.png" />
+		<link rel="apple-touch-icon" href="/images/icons/icon-152.png" />
+		<link rel="apple-touch-icon" href="/images/icons/icon-192.png" />
+		<link rel="apple-touch-icon" href="/images/icons/icon-384.png" />
+		<link rel="apple-touch-icon" href="/images/icons/icon-512.png" />
+		<meta name="apple-mobile-web-app-status-bar" content="#DB4938" />
+		<meta name="theme-color" content="#B12A34" />
+
+		<!--
+			Notice the use of  in the tag above.
+			It will be replaced with the URL of the `public` folder during the build.
+			Only files inside the `public` folder can be referenced from the HTML.
+
+			Unlike "/favicon.ico" or "favicon.ico", "/favicon.ico" will
+			work correctly both with client-side routing and a non-root public URL.
+			Learn how to configure a non-root public URL by running `npm run build`.
+		-->
+		<title>Something something</title>
+		
+	</head>
+	<body>
+		<h1>Some other minimalui</h1>
+
+		<p>
+			<button id="butInstall" type="button" disabled>
+				Install
+			</button>
+		</p>
+
+		<h3>
+			Set app badge in page
+		</h3>
+		<div id="demoControls">
+			<label for="badgeVal">Badge value</label>
+			<input type="number" id="badgeVal" placeholder="<number>" min="0" value="42" disabled />
+			<br>
+			<button id="butSet" type="button" disabled>
+				Set
+			</button>
+			<button id="butClear" type="button" disabled>
+				Clear
+			</button>
+		</div>
+
+		<p>
+			<button id="butMakeXHR" type="button" disabled>
+				Make XHR
+			</button>
+		</p>
+
+		
+<script type="text/javascript">
+		/* Add to Home Screen */
+let deferredPrompt;
+const btnAdd = document.getElementById('butInstall');
+btnAdd.addEventListener('click', (e) => {
+	if (!deferredPrompt) {
+		alert("Install prompt not available. Is app already installed?");
+		// The deferred prompt isn't available.
+		deferredPrompt = null;
+		return;
+	}
+	// hide our user interface that shows our A2HS button
+	btnAdd.setAttribute('disabled', true);
+	// Show the prompt
+	deferredPrompt.prompt();
+	// Wait for the user to respond to the prompt
+	deferredPrompt.userChoice.then((resp) => {
+		console.log(JSON.stringify(resp));
+	});
+});
+
+window.addEventListener('beforeinstallprompt', (e) => {
+	console.log("before install");
+	// Prevent the mini-info bar from appearing.
+	e.preventDefault();
+	// Stash the event so it can be triggered later.
+	deferredPrompt = e;
+	// Update UI notify the user they can add to home screen
+	btnAdd.removeAttribute('disabled');
+});
+
+
+/* Service Worker */
+if ('serviceWorker' in navigator) {
+	navigator.serviceWorker
+		.register('/othersw.js')
+		.then(() => { console.log('Other Service Worker Registered'); });
+}
+
+
+
+let otVersion = false;
+const butSet = document.getElementById('butSet');
+const butClear = document.getElementById('butClear');
+const inputBadgeVal = document.getElementById('badgeVal');
+
+const butMakeXHR = document.getElementById('butMakeXHR');
+
+// Check if the API is supported.
+if ('setExperimentalAppBadge' in navigator) {
+	isSupported('v2')
+}
+
+// Check if the previous API surface is supported.
+if ('ExperimentalBadge' in window) {
+	isSupported('v1');
+}
+
+// Check if the previous API surface is supported.
+if ('setAppBadge' in navigator) {
+	isSupported('v3');
+}
+
+// Update the UI to indicate whether the API is supported.
+function isSupported(kind) {
+	console.log('supported', kind);
+	//const divNotSupported = document.getElementById('notSupported');
+	//divNotSupported.classList.toggle('hidden', true);
+	butSet.removeAttribute('disabled');
+	butClear.removeAttribute('disabled');
+	inputBadgeVal.removeAttribute('disabled');  
+	
+	butMakeXHR.removeAttribute('disabled');
+}
+
+// Click event handler for Set button.
+butSet.addEventListener('click', () => {
+	const val = parseInt(inputBadgeVal.value, 10);
+	if (isNaN(val)) {
+		setBadge();
+		return;
+	}
+	setBadge(val);
+});
+
+// Click event handler for Clear button.
+butClear.addEventListener('click', () => {
+	alert("clear badge");
+	clearBadge();
+});
+
+butMakeXHR.addEventListener('click', () => {
+	alert("do xhr");
+	fetch('manifest.json');
+});
+
+// Wrapper to support first and second origin trial
+// See https://web.dev/badging-api/ for details.
+function setBadge(...args) {
+	if (navigator.setAppBadge) {
+		alert("setAppBadge: "+args);
+		navigator.setAppBadge(args);
+	} else if (navigator.setExperimentalAppBadge) {
+		alert("setExperimentalAppBadge: "+args);
+		navigator.setExperimentalAppBadge(args);
+	} else if (window.ExperimentalBadge) {
+		alert("window.ExperimentalBadge: "+args);
+		window.ExperimentalBadge.set(args);
+	} else {
+		alert('cannot set badge :(');
+	}
+}
+
+// Wrapper to support first and second origin trial
+// See https://web.dev/badging-api/ for details.
+function clearBadge() {
+	if (navigator.clearAppBadge) {
+		alert('clearAppBadge');
+		navigator.clearAppBadge();
+	} else if (navigator.clearExperimentalAppBadge) {
+		alert('clearExperimentalAppBadge');
+		navigator.clearExperimentalAppBadge();
+	} else if (window.ExperimentalBadge) {
+		alert('window.ExperimentalBadge');
+		window.ExperimentalBadge.clear();
+	} else {
+		alert('cannot clear badge :(');
+	}
+}
+</script>
+	</body>
+
+</html>

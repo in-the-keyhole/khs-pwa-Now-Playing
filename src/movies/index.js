@@ -3,7 +3,7 @@ import { useQuery } from '@apollo/client';
 import Movie from './Movie'
 import { NOW_PLAYING } from '../GqlQueries';
 import Header from "../components/Header";
-import { LS_PREFIX } from "../config";
+import { LS_PREFIX, setBadge } from "../config";
 
 const Movies = () => {
 	const [searchText, setSearchText] = useState('');
@@ -11,7 +11,7 @@ const Movies = () => {
 	const [movies, setMovies] = useState(null);
 	const [searchDisabled, setSearchDisabled] = useState(false);
 	const [filteredMovies, setFilteredMovies] = useState(null);
-	
+
 	let { loading } = useQuery(NOW_PLAYING, {
 		onCompleted: (results) => {
 			//set full list of movies as master list which can be filtered thru and display a subset
@@ -19,6 +19,7 @@ const Movies = () => {
 			setFilteredMovies(results.nowPlaying);
 			console.log("Got live results", results.nowPlaying);
 			localStorage.setItem(LS_PREFIX+'movies', JSON.stringify(results.nowPlaying));
+			setBadge(results.nowPlaying.length);
 		},
 		onError: (err) => {
 			const cachedNowPlaying = localStorage.getItem(LS_PREFIX+'movies');

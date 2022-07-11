@@ -3,13 +3,14 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery, makeVar } from '@apollo/client';
 import { MOVIE_DETAIL } from '../GqlQueries';
 import Header from "../components/Header";
-import { LS_PREFIX } from "../config";
+import { LS_PREFIX, setBadge } from "../config";
 
 const MovieDetail = () => {
+	//clear app icon badge
+	setBadge(0);
 
 	//get movie id from url path
 	const { id } = useParams();
-	//const movieCache = makeVar({});
 
 	const [error, setError] = useState(false);
 	const [movie, setMovie] = useState(null);
@@ -32,7 +33,6 @@ const MovieDetail = () => {
 			} else {
 				console.log("No results from api, no data in cache, show error");
 				setError(true);
-				setSearchDisabled(true);	//disable search if no movies are returned
 			}
 		}
 	});

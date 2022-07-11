@@ -12,6 +12,7 @@ const App = () => {
 		<BrowserRouter>
 			<Routes>
 				<Route path="/" element={<Login />} />
+				<Route path="/login" element={<Login />} />
 				<Route element={ <PrivateRoute redirectPath='' />}>
 					<Route path="/movies" element={<Movies />} />
 					<Route path="/about/:id" element={<MovieDetail />} />
