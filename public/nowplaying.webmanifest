@@ -1,6 +1,6 @@
 {
-	"name": "Now Playing Progressive Web App V1",
-	"short_name": "NP PWA V1",
+	"name": "Now Playing Progressive Web App V3",
+	"short_name": "NP PWA V3",
 	"display": "standalone",
 	"description": "Progressive Web App that lists movies now playing nearby",
 	"scope": "/",

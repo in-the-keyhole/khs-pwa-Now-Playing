@@ -13,6 +13,7 @@ const Header = ({searchText, search, disabled=true}) => {
 					disabled={disabled}
 				/>
 				<Link to="/">Logout</Link>
+				<Link to="/phone">Phone</Link>
 			</div>
 		</header>
 	)

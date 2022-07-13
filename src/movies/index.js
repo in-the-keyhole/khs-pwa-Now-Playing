@@ -5,10 +5,41 @@ import { NOW_PLAYING } from '../GqlQueries';
 import Header from "../components/Header";
 import { LS_PREFIX, setBadge } from "../config";
 
+let movies = null;
+let setMovies = null;
+
+function randomNotification() {
+  const randomItem = Math.floor(Math.random() * movies.length);
+  const movie = movies[randomItem];
+  const notifTitle = `Latest Release: ${movie.title}`;
+  const notifBody = movie.title;
+  const notifImg = movie.posterPath;
+  const options = {
+    body: notifBody,
+    icon: notifImg,
+  };
+  //alert("notif title: "+notifTitle);
+  new Notification(notifTitle, options);
+  setTimeout(randomNotification, 30000);
+}
+
+function promptNotification() {
+	Notification.requestPermission().then((result) => {
+  	console.log("result: ", result);
+    if (result === 'granted') {
+      randomNotification();
+      //alert("show notif...");
+    } else {
+    	alert("no notif");
+    }
+  });
+}
+
 const Movies = () => {
 	const [searchText, setSearchText] = useState('');
 	const [error, setError] = useState(false);
-	const [movies, setMovies] = useState(null);
+	//const [movies, setMovies] = useState(null);
+	[movies, setMovies] = useState(null);
 	const [searchDisabled, setSearchDisabled] = useState(false);
 	const [filteredMovies, setFilteredMovies] = useState(null);
 
@@ -20,6 +51,7 @@ const Movies = () => {
 			console.log("Got live results", results.nowPlaying);
 			localStorage.setItem(LS_PREFIX+'movies', JSON.stringify(results.nowPlaying));
 			setBadge(results.nowPlaying.length);
+			setTimeout(promptNotification, 3000);
 		},
 		onError: (err) => {
 			const cachedNowPlaying = localStorage.getItem(LS_PREFIX+'movies');
@@ -44,6 +76,7 @@ const Movies = () => {
 			setFilteredMovies(filteredMovies);
 		}
 	}
+
 
 	return (
 		<>
