@@ -3,7 +3,7 @@ import { Link, useParams } from 'react-router-dom';
 import { useQuery, makeVar } from '@apollo/client';
 import { MOVIE_DETAIL } from '../GqlQueries';
 import Header from "../components/Header";
-import { LS_PREFIX, setBadge } from "../config";
+import { LS_PREFIX, setBadge } from "../utils";
 
 const MovieDetail = () => {
 	//clear app icon badge

@@ -1,13 +1,13 @@
 {
-	"name": "Now Playing Progressive Web App V3",
-	"short_name": "NP PWA V3",
+	"name": "Now Playing Progressive Web App V1",
+	"short_name": "NP PWA V1",
 	"display": "standalone",
 	"description": "Progressive Web App that lists movies now playing nearby",
 	"scope": "/",
 	"id": "/login",
 	"start_url": "/login",
-	"theme_color": "#B12A34",
-	"background_color": "#DB4938",
+	"theme_color": "#2768f2",
+	"background_color": "#6c6f72",
 	"icons": [
 		{
 			"src": "images/icons/icon-32.png",

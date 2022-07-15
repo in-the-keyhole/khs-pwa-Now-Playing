@@ -1,11 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./login-styles.css";
-import { LS_PREFIX } from "../config";
+import { LS_PREFIX } from "../utils";
 
 const Login = () => {
-	//localStorage.removeItem(LS_PREFIX+'authUser');
-	localStorage.clear();
+	localStorage.removeItem(LS_PREFIX+'authUser');
+	//localStorage.clear();
 	const navigate = useNavigate();
 
 	const [loginError, setLoginError] = useState(false);

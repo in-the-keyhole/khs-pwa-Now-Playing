@@ -27,6 +27,7 @@ a:hover {
 	text-decoration: none;
 }
 
+
 header h3 {
 	margin: 5px 0 0 0;
 }
@@ -35,14 +36,17 @@ header {
 	flex-direction: row;
 	justify-content: space-between;
 	margin: 15px 0;
+	overflow: hidden;
+	position: relative;
 }
-header div {
+header > div {
 	display: flex;
 }
 
 header input {
 	background: #000;
 	color: #fff;
+	margin: 0px 20px;
 	padding: 5px;
 }
 header input:disabled {
@@ -64,6 +68,21 @@ header a:hover {
 	border: 1px solid rgb(238, 238, 238);
 	color: white;
 	cursor: pointer;
+}
+#main-nav {
+	display: none;
+}
+header button {
+	background-color: black;
+	border: none;
+	color: white;
+	font-size: 40px;
+	line-height: 25px;
+	padding: 10px;
+}
+header button:hover {
+	cursor: pointer;
+	background-color: gray;
 }
 
 .msg {

@@ -54,3 +54,19 @@ export function badgeSupport() {
 	const badgeSupport = document.getElementById('badgingVersion').value;
 	return badgeSupport != null ? true : false;
 }
+
+export function getBrowser() {
+	const agent = window.navigator.userAgent.toLowerCase();
+	switch (true) {
+		case agent.includes("iphone"): return "Iphone";
+		case agent.includes("android") && agent.includes("chrome"): return "Android Chrome";
+		case agent.includes("edge"): return "Edge";
+		case agent.includes("edg/"): return "Edge";
+		case agent.includes("opr") && !!window.opr: return "Opera";
+		case agent.includes("chrome") && !!window.chrome: return "Chrome";
+		case agent.includes("trident"): return "MSIE";
+		case agent.includes("firefox"): return "Firefox";
+		case agent.includes("safari"): return "Safari";
+		default: return "other";
+	}
+}

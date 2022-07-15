@@ -61,6 +61,10 @@
 			</button>
 		</p>
 
+		<h3>Notifications</h3>
+		<p><button id="butNotification" type="button" onClick="notify()">Create Notification</button></p>
+
+
 		
 <script type="text/javascript">
 		/* Add to Home Screen */
@@ -189,6 +193,35 @@ function clearBadge() {
 		window.ExperimentalBadge.clear();
 	} else {
 		alert('cannot clear badge :(');
+	}
+}
+
+
+function randomNotification() {
+  const notifTitle = "Random notification " + new Date().getSeconds();
+  const notifBody = "Notification Body "+ new Date().getMilliseconds();
+  const notifImg = "/images/icons/icon-32.png";
+  const options = {
+    body: notifBody,
+    icon: notifImg,
+  };
+  alert("Fire notification: "+notifTitle);
+  new Notification(notifTitle, options);
+}
+
+
+function notify() {
+	if (Notification && Notification.permission == 'granted') {
+		randomNotification();
+	} else {
+		Notification.requestPermission().then((result) => {
+			console.log("result: ", result);
+			if (result === 'granted') {
+				randomNotification();
+			} else {
+				alert("Notification not allowed");
+			}
+		});
 	}
 }
 </script>

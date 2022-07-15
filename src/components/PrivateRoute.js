@@ -1,5 +1,5 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { LS_PREFIX } from "../config";
+import { LS_PREFIX } from "../utils";
 
 const PrivateRoute = ({ redirectPath = '/' }) => {
 	const user = localStorage.getItem(LS_PREFIX+'authUser');

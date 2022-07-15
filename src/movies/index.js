@@ -3,42 +3,36 @@ import { useQuery } from '@apollo/client';
 import Movie from './Movie'
 import { NOW_PLAYING } from '../GqlQueries';
 import Header from "../components/Header";
-import { LS_PREFIX, setBadge } from "../config";
+import { LS_PREFIX, setBadge, getBrowser } from "../utils";
 
 let movies = null;
 let setMovies = null;
 
-function randomNotification() {
-  const randomItem = Math.floor(Math.random() * movies.length);
-  const movie = movies[randomItem];
-  const notifTitle = `Latest Release: ${movie.title}`;
-  const notifBody = movie.title;
-  const notifImg = movie.posterPath;
-  const options = {
-    body: notifBody,
-    icon: notifImg,
-  };
-  //alert("notif title: "+notifTitle);
-  new Notification(notifTitle, options);
-  setTimeout(randomNotification, 30000);
-}
-
 function promptNotification() {
-	Notification.requestPermission().then((result) => {
-  	console.log("result: ", result);
-    if (result === 'granted') {
-      randomNotification();
-      //alert("show notif...");
-    } else {
-    	alert("no notif");
-    }
-  });
+	const browser = getBrowser();
+	//requestPermission not supported in IOS
+	if (browser == 'Iphone') {
+		return;
+	} else if (browser == 'Safari') {
+		if (Notification.permission != 'granted') {
+			Notification.requestPermission();
+		}
+	} else {
+		Notification.requestPermission().then((result) => {
+			if (result === 'granted') {
+				console.log("Notifications allowed");
+			} else {
+				console.log("Notifications denied");
+			}
+		});
+	}
 }
 
 const Movies = () => {
+	promptNotification();
+
 	const [searchText, setSearchText] = useState('');
 	const [error, setError] = useState(false);
-	//const [movies, setMovies] = useState(null);
 	[movies, setMovies] = useState(null);
 	const [searchDisabled, setSearchDisabled] = useState(false);
 	const [filteredMovies, setFilteredMovies] = useState(null);
@@ -51,7 +45,6 @@ const Movies = () => {
 			console.log("Got live results", results.nowPlaying);
 			localStorage.setItem(LS_PREFIX+'movies', JSON.stringify(results.nowPlaying));
 			setBadge(results.nowPlaying.length);
-			setTimeout(promptNotification, 3000);
 		},
 		onError: (err) => {
 			const cachedNowPlaying = localStorage.getItem(LS_PREFIX+'movies');
@@ -60,6 +53,7 @@ const Movies = () => {
 				console.log("Got cached results...", data);
 				setMovies(data);
 				setFilteredMovies(data);
+				setBadge(data.length);
 			} else {
 				console.log("No results from api, no data in cache, show error");
 				setError("An error occurred getting movies. "+err);
@@ -76,7 +70,6 @@ const Movies = () => {
 			setFilteredMovies(filteredMovies);
 		}
 	}
-
 
 	return (
 		<>
