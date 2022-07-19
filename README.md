@@ -63,3 +63,29 @@ Clear cache:
 1. On the left side panel under Cache expand the Cache Storage menu.
 2. Right click on all "nowPlaying" items and click on Delete
 
+
+## Live Site
+
+The site is available over https via https://now-playing-pwa.keyhole.institute/
+There you should be able to view the website on a mobile device. Once you have viewed the movie listing and a few movie detail pages you should be able to turn wifi off or go into airplane mode and still see the content that you have previously viewed.
+
+On an Android device, you should see a prompt when going to the login page.  The prompt allows you to download the site as an app.  When the app is installed you should get an app icon that launches the app as a PWA when clicked on.
+
+The install prompt is not allowed on IOS devices.  To install as an app on an IOS device you will have to use the default 'Add to homescreen' option from the browser menu.
+
+## AWS Deploying
+
+A live instance of the Now Playing site is deployed to https://now-playing-pwa.keyhole.institute/.
+
+Deploying changes requires AWS CLI to be installed and secret keys to be set up.
+When changes are ready to be deployed to the live site follow the steps below.
+
+
+1. Open a terminal window.
+2. Run command `npm run build`
+3. Run command `aws s3 sync build s3://now-playing-pwa.keyhole.institute`
+4. Run command `aws cloudfront create-invalidation --distribution-id E1IM8DXOSVOD6W --paths "/*" --no-cli-pager`
+
+** no smart quotes allowed in cli commands, only plain text quotes
+
+

@@ -61,9 +61,13 @@ if (PWA) {
 	});
 
 
-	self.addEventListener('activate', (event) => {
+	self.addEventListener('activate', (e) => {
 		console.log("[Service Worker] Deleting old caches...");
-		event.waitUntil(deleteOldCaches());
+		e.waitUntil(deleteOldCaches());
+	});
+
+	self.addEventListener('push', (e) => {
+		console.log("[Service Worker] Received push notification", e);
 	});
 
 }

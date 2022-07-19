@@ -6,10 +6,10 @@ let navigate = null;
 
 function toggleMenu() {
   var x = document.getElementById("main-nav");
-  if (x.style.display === "flex") {
+  if (x.style.display === "block") {
     x.style.display = "none";
   } else {
-    x.style.display = "flex";
+    x.style.display = "block";
   }
   return false;
 }

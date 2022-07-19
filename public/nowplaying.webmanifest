@@ -49,5 +49,7 @@
 			"type": "image/png",
 			"sizes": "512x512"
 		}
-	]
+	],
+	"gcm_sender_id": "abc123",
+	"applicationServerKey": "BIkUaEYLnbHdTXJPnXJwHe16IFUQLZHvQvw2EyIfEqpm8sAROFqtkG4pes_0JPyU8LUuODXIJ3KoUR9gLdYrvl0"
 }

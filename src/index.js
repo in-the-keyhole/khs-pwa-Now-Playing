@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 import ClientProvider from "./ClientProvider";
 import App from "./App";
-import { LS_PREFIX, PWA, CACHE_NAME } from "./config";
+import { LS_PREFIX, PWA, CACHE_NAME } from "./utils";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
@@ -29,13 +29,11 @@ window.addEventListener('beforeinstallprompt', (event) => {
 });
 
 window.addEventListener('appinstalled', (event) => {
-  console.log('appinstalled, clear deferredPrompt', event);
-  // Clear the deferredPrompt so it can be garbage collected
-  window.deferredPrompt = null;
-  installDiv.classList.toggle('hidden', false);
+	console.log('appinstalled, clear deferredPrompt', event);
+	// Clear the deferredPrompt so it can be garbage collected
+	window.deferredPrompt = null;
+	installDiv.classList.toggle('hidden', false);
 });
-
-//window.history.replaceState( {}, "", "" );
 
 installBtn.addEventListener('click', async () => {
 	console.log('installBtn-clicked');
@@ -74,7 +72,46 @@ if ("serviceWorker" in navigator) {
 			navigator.serviceWorker
 				//.register("/sw.js?pwa="+PWA+"&cache_name="+CACHE_NAME)
 				.register("/sw.js")
-				.then(res => console.log("[Service Worker] Registered"))
+				.then((registration) => {
+					//console.log("[Service worker] registration", registration);
+					/*
+					//push notification code here
+					return registration.pushManager.getSubscription()
+						.then(async (subscription) => {
+							//if subscription was found, return it and move on
+							if (subscription) {
+								console.log("Got registration subscription", subscription);
+								return subscription;
+							}
+
+							//if registration not found, get the server's public key
+							const response = await fetch('./publickey');
+							const vapidPublicKey = await response.text();
+							console.log("got vapid key", vapidPublicKey);
+							//const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
+
+							// Otherwise, subscribe the user (userVisibleOnly allows to specify that we don't plan to
+							// send notifications that don't have a visible effect for the user).
+							return registration.pushManager.subscribe({
+								userVisibleOnly: true,
+								applicationServerKey: vapidPublicKey
+							});
+						});
+					*/
+				})
+				.then((subscription) => {
+					// subscription part
+					//console.log("[Service Worker] subscription", subscription);
+					// fetch('./register', {
+					// 	method: 'post',
+					// 	headers: {
+					// 		'Content-type': 'application/json'
+					// 	},
+					// 	body: JSON.stringify({
+					// 		subscription: subscription
+					// 	}),
+					// });
+				})
 				.catch(err => console.log("[Service Worker] not registered", err))
 		});
 	} else {

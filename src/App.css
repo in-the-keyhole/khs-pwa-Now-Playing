@@ -36,11 +36,11 @@ header {
 	flex-direction: row;
 	justify-content: space-between;
 	margin: 15px 0;
-	overflow: hidden;
 	position: relative;
 }
 header > div {
 	display: flex;
+	position: relative;
 }
 
 header input {
@@ -53,17 +53,6 @@ header input:disabled {
 	opacity: 0.5;
 }
 
-header a {
-	background-color: black;
-	border: 1px solid transparent;
-	color: white;
-	font-weight: bold;
-	line-height: 21px;
-	margin: 0 0 0 10px;
-	padding: 10px;
-	text-decoration: none;
-}
-
 header a:hover {
 	border: 1px solid rgb(238, 238, 238);
 	color: white;
@@ -71,6 +60,23 @@ header a:hover {
 }
 #main-nav {
 	display: none;
+	position: absolute;
+	right: 45px;
+	z-index: 1;
+}
+#main-nav a {
+	background-color: black;
+	border: 1px solid transparent;
+	color: white;
+	display: block;
+	font-weight: bold;
+	line-height: 21px;
+	padding: 10px;
+	text-decoration: none;
+}
+#main-nav a:hover {
+	background-color: white;
+	color: black;
 }
 header button {
 	background-color: black;
