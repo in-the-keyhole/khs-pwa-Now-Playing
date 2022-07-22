@@ -1,0 +1,26 @@
+[
+	{
+		"id": 1,
+		"username": "a",
+		"password": "a",
+		"pswdhash": "0cc175b9c0f1b6a831c399e269772661"
+	},
+	{
+		"id": 2,
+		"username": "s",
+		"password": "s",
+		"pswdhash": "03c7c0ace395d80182db07ae2c30f034"
+	},
+	{
+		"id": 3,
+		"username": "d",
+		"password": "d",
+		"pswdhash": "8277e0910d750195b448797616e091ad"
+	},
+	{
+		"id": 4,
+		"username": "f",
+		"password": "f",
+		"pswdhash": "8fa14cdd754f91cc6554c9e71929cce7"
+	}
+]

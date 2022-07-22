@@ -1,24 +1,36 @@
 import { useState } from 'react';
 import { useNavigate } from "react-router-dom";
 import "./login-styles.css";
-import { LS_PREFIX } from "../utils";
+import { LS_PREFIX, authUser } from "../utils";
 
 const Login = () => {
 	localStorage.removeItem(LS_PREFIX+'authUser');
-	//localStorage.clear();
 	const navigate = useNavigate();
 
-	const [loginError, setLoginError] = useState(false);
+	const [loginError, setLoginError] = useState("");
 
-	const login = (e) => {
+	const login = async (e) => {
 		e.preventDefault();
 		const username = e.target.username.value;
 		const password = e.target.password.value;
 		if (username && password) {
-			localStorage.setItem(LS_PREFIX+'authUser', true);
-			navigate('/movies');
+
+			//if online, check username and password against db
+			//if user is found, set local storage token of md5(username + password + SALT)
+			const authResponse = await authUser(username, password);
+
+			console.log("auth response", authResponse);
+
+			//if offline, check if local storage token exists and matches username & password combo
+
+			if (authResponse) {
+				localStorage.setItem(LS_PREFIX+'authUser', true);
+				navigate('/movies');
+			} else {
+				setLoginError("Username or password is invalid");
+			}
 		} else {
-			setLoginError(true);
+			setLoginError("Enter a username and password");
 		}
 	};
 	
@@ -34,7 +46,7 @@ const Login = () => {
 						<input type="password" id="password" name="password" className="form-control" />
 					</label>
 				{loginError && 
-					<p className="msg">Enter a username and password</p>
+					<p className="msg">{loginError}</p>
 				}
 					<button type="submit" className="btn btn-primary">
 						Login

@@ -2,11 +2,12 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 		<link rel="shortcut icon" href="%PUBLIC_URL%/favicon.ico">
 		<link rel="manifest" href="%PUBLIC_URL%/nowplaying.webmanifest">
 
 		<!-- ios support -->
+		<meta name="apple-mobile-web-app-capable" content="yes" />
 		<link rel="apple-touch-icon" href="%PUBLIC_URL%/images/icons/icon-32.png" />
 		<link rel="apple-touch-icon" href="%PUBLIC_URL%/images/icons/icon-72.png" />
 		<link rel="apple-touch-icon" href="%PUBLIC_URL%/images/icons/icon-96.png" />
@@ -30,7 +31,7 @@
 		-->
 		<title>PWA Now Playing</title>
 		<style type="text/css">
-			#installContainer {
+			.installDiv {
 				background-color: white;
 				border: 1px solid #aaa;
 				box-shadow: 0px 0px 5px 1px #aaa;
@@ -43,11 +44,15 @@
 				width: 300px;
 				z-index: 2;
 			}
-			#installContainer h1 {
+			.installDiv h1 {
 				color: black;
 				font-size: 20px;
 			}
-			#installContainer button {
+			.installDiv h2 {
+				color: black;
+				font-size: 14px;
+			}
+			.installDiv button {
 				border: none;
 				color: white;
 				cursor: pointer;
@@ -61,15 +66,16 @@
 			#installBtn:hover {
 				background-color: darkgreen;
 			}
-			#cancelBtn {
+			#cancelBtn, #closeBtn {
 				background-color: red;
 			}
-			#cancelBtn:hover {
+			#cancelBtn:hover, #closeBtn:hover {
 				background-color: darkred;
 			}
 			.hidden {
 				display: none;
 			}
+			
 		</style>
 	</head>
 	<body>
@@ -85,10 +91,16 @@
 			To create a production bundle, use `npm run build`.
 		-->
 		<!-- Install button, hidden by default -->
-		<div id="installContainer" class="hidden">
-			<h1>Download PWA Now Playing App</h1> 
+		<div id="installContainer" class="hidden installDiv">
+			<h1>Download PWA Now Playing App <span id="appVersion"></span></h1> 
 			<button id="installBtn" type="button">Install</button>
 			<button id="cancelBtn" type="button">Cancel</button>
+		</div>
+		<!-- IOS install prompt -->
+		<div id="iosInstallContainer" class="hidden installDiv">
+			<h1>Install this web app on your iPhone <span id="iosAppVersion"></span></h1>
+			<h2>Tap the settings icon then 'Add to Home Screen'</h2>
+			<button id="closeBtn" type="button">Close</button>
 		</div>
 		<input type="hidden" id="badgingVersion" value="" />
 	</body>

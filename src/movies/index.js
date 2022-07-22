@@ -9,22 +9,22 @@ let movies = null;
 let setMovies = null;
 
 function promptNotification() {
-	const browser = getBrowser();
-	//requestPermission not supported in IOS
-	if (browser == 'Iphone') {
-		return;
-	} else if (browser == 'Safari') {
-		if (Notification.permission != 'granted') {
-			Notification.requestPermission();
-		}
-	} else {
-		Notification.requestPermission().then((result) => {
-			if (result === 'granted') {
-				console.log("Notifications allowed");
-			} else {
-				console.log("Notifications denied");
+	if ('Notification' in window) {
+		const browser = getBrowser();
+		console.log("browser: "+browser);
+		if (browser == 'Safari') {
+			if (Notification.permission != 'granted') {
+				Notification.requestPermission();
 			}
-		});
+		} else {
+			Notification.requestPermission().then((result) => {
+				if (result === 'granted') {
+					console.log("Notifications allowed");
+				} else {
+					console.log("Notifications denied");
+				}
+			});
+		}
 	}
 }
 
@@ -61,6 +61,7 @@ const Movies = () => {
 			}
 		}
 	});
+	
 
 	const search = (e) => {
 		const val = e.target.value;

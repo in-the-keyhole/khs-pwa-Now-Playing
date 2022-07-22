@@ -3,7 +3,7 @@ const search = self.location.search.substr(1).toLowerCase();
 const params = search.split('&');
 
 //if exactly 'pwa=1' appears in the search params, allow PWA functionality
-const PWA = 1;//params.includes('pwa=1');
+const PWA = params.includes('pwa=1');
 
 //check for a cache name in search params
 //if not present, default to 'nowPlaying-V1'
@@ -15,19 +15,24 @@ if (cacheParam) {
 const cacheName = cName ? 'nowPlaying-'+cName : 'nowPlaying-V1';
 
 //populate this array to cache assets upon initial load
-const contentToCache = [];
+const contentToCache = [
+	'index.html',
+	'./', // Alias for index.html
+];
 
 //any request url that should not be cached
 const cacheBlacklist = [
 	'/favicon.ico',
 	'/login',
 	'graphql',
+	'/users.json'
 ];
 
 if (PWA) {
 	// Installing Service Worker
 	self.addEventListener('install', (e) => {
 		console.log(`[Service Worker] Install ${cacheName}`);
+		deleteOldCaches();
 		e.waitUntil((async () => {
 			const cache = await caches.open(cacheName);
 			console.log('[Service Worker] Caching all: app and content', contentToCache);
@@ -69,7 +74,6 @@ if (PWA) {
 	self.addEventListener('push', (e) => {
 		console.log("[Service Worker] Received push notification", e);
 	});
-
 }
 
 const deleteCache = async key => {

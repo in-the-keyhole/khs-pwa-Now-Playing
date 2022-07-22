@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
-import { LS_PREFIX } from "../utils";
+import { LS_PREFIX, CACHE_NAME } from "../utils";
 
 let navigate = null;
 
@@ -46,33 +46,38 @@ async function reset(event) {
 	localStorage.clear();
 	console.log("Deleted local storage");
 
-	//delete all caches
-	const keyList = await caches.keys();
-	keyList.forEach(key => {
-		caches.delete(key);
-		console.log("Deleted cache "+key);
-	});
-
-	//unregister service worker
-	navigator.serviceWorker.getRegistrations().then(regs => {
-		regs.forEach(reg => {
-			console.log("[Service Worker] unregistering", reg);
-			reg.unregister();	
+	if ('caches' in window) {
+		//cache api does not seem to work in some devices
+		const keyList = await caches.keys();
+		keyList.forEach(key => {
+			caches.delete(key);
+			console.log("Deleted cache "+key);
 		});
-	}).catch(function(err) {
-		console.log("[Service Worker] unregistration failed: ", err);
-	});
+	}
 
+	if ('serviceWorker' in window.navigator) {
+		//unregister service worker
+		navigator.serviceWorker.getRegistrations().then(regs => {
+			regs.forEach(reg => {
+				console.log("[Service Worker] unregistering", reg);
+				reg.unregister();	
+			});
+		}).catch(function(err) {
+			console.log("[Service Worker] unregistration failed: ", err);
+		});
+	}
+	
 	//redirect to login page so service worker can regregister and rebuild cache
 	navigate('/');
 }
 
 const Header = ({searchText, search, disabled=true}) => {
 	navigate = useNavigate();
-	const notifAllowed = Notification.permission === 'granted' ? true : false;
+	const notifAllowed = 'Notification' in window && Notification.permission === 'granted' ? true : false;
+	
 	return (
 		<header>
-			<h2>PWA Now Playing</h2>
+			<h2>PWA Now Playing <span>{CACHE_NAME}</span></h2>
 			<div>
 				<input
 					value={searchText}

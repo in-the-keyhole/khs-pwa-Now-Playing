@@ -14,11 +14,40 @@ root.render(
 const installDiv = document.getElementById('installContainer');
 const installBtn = document.getElementById('installBtn');
 const cancelBtn = document.getElementById('cancelBtn');
+const iosInstallDiv = document.getElementById('iosInstallContainer');
+const closeBtn = document.getElementById('closeBtn');
+
+let isDownloadDeclined = true;
+
+const isIos = () => {
+  const userAgent = window.navigator.userAgent.toLowerCase();
+  return /iphone|ipad|ipod/.test( userAgent );
+}
+// Detects if device is in standalone mode
+const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
+
+// Checks if should display install popup notification:
+if (isIos() && !isInStandaloneMode()) {
+  //show install prompt
+  isDownloadDeclined = localStorage.getItem(LS_PREFIX + 'declineAppDownload');
+	if (!isDownloadDeclined) {
+		// Remove the 'hidden' class from the install button container.
+		iosInstallDiv.classList.toggle('hidden', false);
+	}
+} else {
+	console.log("non ios device");
+}
+
+//set app version - this is for testing purposes to easily see on download prompt what current app version is
+document.getElementById('appVersion').textContent = CACHE_NAME;
+document.getElementById('iosAppVersion').textContent = CACHE_NAME;
+
+
 window.addEventListener('beforeinstallprompt', (event) => {
 	// Prevent the mini-infobar from appearing on mobile.
 	event.preventDefault();
 	console.log('beforeinstallprompt', event);
-	const isDownloadDeclined = localStorage.getItem(LS_PREFIX + 'declineAppDownload');
+	isDownloadDeclined = localStorage.getItem(LS_PREFIX + 'declineAppDownload');
 	if (!isDownloadDeclined) {
 		// Stash the event so it can be triggered later.
 		window.deferredPrompt = event;
@@ -64,14 +93,22 @@ cancelBtn.addEventListener('click', async () => {
 	localStorage.setItem(LS_PREFIX + 'declineAppDownload', true);
 });
 
+//click event listener for ios prompt button
+closeBtn.addEventListener('click', async () => {
+	console.log('closeBtn-clicked, set local var');
+	iosInstallDiv.classList.toggle('hidden', true);
+	//when user declines app download, set localStorage var which will be cleared out upon logout
+	localStorage.setItem(LS_PREFIX + 'declineAppDownload', true);
+});
+
 
 if ("serviceWorker" in navigator) {
 	if (PWA) {
 		//vars can be passed to sw.js via search params
 		window.addEventListener("load", function() {
 			navigator.serviceWorker
-				//.register("/sw.js?pwa="+PWA+"&cache_name="+CACHE_NAME)
-				.register("/sw.js")
+				.register("/sw.js?pwa="+PWA+"&cache_name="+CACHE_NAME)
+				//.register("/sw.js")
 				.then((registration) => {
 					//console.log("[Service worker] registration", registration);
 					/*
@@ -115,10 +152,10 @@ if ("serviceWorker" in navigator) {
 				.catch(err => console.log("[Service Worker] not registered", err))
 		});
 	} else {
-		console.log("Not running as PWA");
+		console.log("Not running as PWA, version: "+CACHE_NAME);
 		//delete all localStorage items prefixed with 'PWA_nowPlaying_'
 		Object.keys(localStorage).forEach(function(key){
-			if (key.startsWith('PWA_nowPlaying_')) {
+			if (key.startsWith('PWA_nowPlaying_') && !key.endsWith('authUser') && !key.endsWith('userHash')) {
 				localStorage.removeItem(key);
 			}
 		});
@@ -132,7 +169,7 @@ if ("serviceWorker" in navigator) {
 		});
 	}
 } else {
-	alert("Service worker not available in browser. Connection must be over https.");
+	console.log("Service worker not available in browser. Connection must be over https.");
 }
 
 
