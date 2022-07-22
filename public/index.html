@@ -75,10 +75,24 @@
 			.hidden {
 				display: none;
 			}
+
+			#offlineMode {
+				background-color: #f3591d;
+				display: none;
+				margin: -8px -8px;
+				padding: 3px 0;
+				position: relative;
+				text-align: center;
+				z-index: 1;
+			}
+			body.offline #offlineMode {
+				display: block;
+			}
 			
 		</style>
 	</head>
 	<body>
+		<div id="offlineMode">Offline mode</div>
 		<div id="root"></div>
 		<!--
 			This HTML file is a template.

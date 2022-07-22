@@ -3,7 +3,7 @@ import md5 from 'md5';
 	String variable used for cache name
 	values: V1 | V2 | anything
 */
-export const CACHE_NAME = 'V1';
+export const CACHE_NAME = 'V2';
 
 /*
 	Boolean variable to toggle progressive web app features
@@ -90,34 +90,49 @@ export function getBrowser() {
 export async function authUser(username, password) {
 	//create user hash of username, password and salt
 	const userHash = md5(username + password + SALT);
+	let validUser = false;
 
-	const validUser = await fetch('/users.json')
-		.then(response => response.json())
-		.then(userData => {
-			const user = userData.filter(u => u.username === username && u.password === password)[0];
-			if (user) {
-				console.log("User auth via fetch call. Set hash token");
-				localStorage.setItem(LS_PREFIX+'authUser', true);
-				localStorage.setItem(LS_PREFIX+'userHash', userHash);
-				return true;
-			} else {
-				return false;
-			}
-		}).catch(e => {
-			console.log("Fetch users error", e);
-			console.log("Login error, may be in offline mode, checking user hash...");
+	if (navigator.onLine) {
+		validUser = await fetch('/users.json')
+			.then(response => response.json())
+			.then(userData => {
+				const user = userData.filter(u => u.username === username && u.password === password)[0];
+				if (user) {
+					console.log("User auth via fetch call. Set hash token");
+					localStorage.setItem(LS_PREFIX+'authUser', true);
+					localStorage.setItem(LS_PREFIX+'userHash', userHash);
+					return true;
+				} else {
+					return false;
+				}
+			}).catch(e => {
+				console.log("Fetch users error", e);
+				console.log("Login error, may be in offline mode, checking user hash...");
 
-			//if here, user may be offline. check username and password against local storage userHash
-			const storedUserHash = localStorage.getItem(LS_PREFIX+'userHash');
-			console.log("storedUserHash: "+storedUserHash+", userHash: "+userHash);
-			if (storedUserHash && storedUserHash === userHash) {
-				console.log("User auth via hash token");
-				return true;
-			} else {
-				//user hash not found or some other error
-				return false;
-			}
-		});
+				//if here, user may be offline. check username and password against local storage userHash
+				const storedUserHash = localStorage.getItem(LS_PREFIX+'userHash');
+				console.log("storedUserHash: "+storedUserHash+", userHash: "+userHash);
+				if (storedUserHash && storedUserHash === userHash) {
+					console.log("User auth via hash token");
+					return true;
+				} else {
+					//user hash not found or some other error
+					return false;
+				}
+			});
+	} else {
+		console.log("User is in offline mode, checking user hash...");
+		//if here, user is offline. check username and password against local storage userHash
+		const storedUserHash = localStorage.getItem(LS_PREFIX+'userHash');
+		console.log("storedUserHash: "+storedUserHash+", userHash: "+userHash);
+		if (storedUserHash && storedUserHash === userHash) {
+			console.log("User auth via hash token");
+			validUser = true;
+		} else {
+			//user hash not found or some other error
+			validUser = false;
+		}
+	}
 
 	return validUser;
 }

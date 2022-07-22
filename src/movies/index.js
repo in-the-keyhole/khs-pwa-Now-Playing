@@ -11,7 +11,7 @@ let setMovies = null;
 function promptNotification() {
 	if ('Notification' in window) {
 		const browser = getBrowser();
-		console.log("browser: "+browser);
+		console.log("Browser: " + browser + " - should support notifications");
 		if (browser == 'Safari') {
 			if (Notification.permission != 'granted') {
 				Notification.requestPermission();

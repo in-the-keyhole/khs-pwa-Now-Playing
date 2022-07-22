@@ -172,6 +172,14 @@ if ("serviceWorker" in navigator) {
 	console.log("Service worker not available in browser. Connection must be over https.");
 }
 
+window.addEventListener('online',  updateOnlineStatus);
+window.addEventListener('offline', updateOnlineStatus);
+updateOnlineStatus();
+
+function updateOnlineStatus(event) {
+  var condition = navigator.onLine ? "online" : "offline";
+  document.body.className = condition;
+}
 
 function badgeSupport(version) {
 	document.getElementById('badgingVersion').value = version;
