@@ -43,10 +43,10 @@ A service worker is a utility that allows most progressive web app features to b
 The landing page for the Now Playing app is a login page. The login system is not wired to a database in order to keep things quick and simple. A hardcoded local file contains the username and passwords in a local json file in 'public/users.json'. Any username/password combo can be added to the list.
 
 The default usernames and passwords are:
-a/a
-s/s
-d/d
-f/f
+1. a/a
+2. s/s
+3. d/d
+4. f/f
 
 
 ## Local testing on desktop
@@ -165,12 +165,19 @@ For more info: https://developer.mozilla.org/en-US/docs/Web/API/notification#bro
 Documentation for building a progressive web app with a full feature set are all over the internet in more depth and description than can be added here. Below is a list of resources that better explain browser compatibility of features, how to implement those features, code examples, etc.
 
 PWA Overview: https://web.dev/progressive-web-apps/
+
 Build PWA from scratch: https://www.freecodecamp.org/news/build-a-pwa-from-scratch-with-html-css-and-javascript/
+
 App Badging API Demo: https://badging-api.glitch.me/
+
 PWA for IOS: https://www.netguru.com/blog/pwa-ios
+
 Basic Service Worker Sample: https://googlechrome.github.io/samples/service-worker/basic/
+
 Push Notification Guide: https://medium.com/@a7ul/beginners-guide-to-web-push-notifications-using-service-workers-cb3474a17679
+
 Starbucks PWA: https://app.starbucks.com/
+
 Simple PWA Live Example: https://stampy.me/pwgen/
 
 
