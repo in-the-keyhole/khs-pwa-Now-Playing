@@ -108,9 +108,8 @@ if ("serviceWorker" in navigator) {
 		window.addEventListener("load", function() {
 			navigator.serviceWorker
 				.register("/sw.js?pwa="+PWA+"&cache_name="+CACHE_NAME)
-				//.register("/sw.js")
 				.then((registration) => {
-					//console.log("[Service worker] registration", registration);
+					console.log("[Service worker] registration", registration);
 					/*
 					//push notification code here
 					return registration.pushManager.getSubscription()
@@ -138,7 +137,7 @@ if ("serviceWorker" in navigator) {
 				})
 				.then((subscription) => {
 					// subscription part
-					//console.log("[Service Worker] subscription", subscription);
+					console.log("[Service Worker] subscription", subscription);
 					// fetch('./register', {
 					// 	method: 'post',
 					// 	headers: {

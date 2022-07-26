@@ -3,7 +3,7 @@ import md5 from 'md5';
 	String variable used for cache name
 	values: V1 | V2 | anything
 */
-export const CACHE_NAME = 'V2';
+export const CACHE_NAME = 'V1';
 
 /*
 	Boolean variable to toggle progressive web app features

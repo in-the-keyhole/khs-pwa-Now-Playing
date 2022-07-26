@@ -11,7 +11,7 @@ const Login = () => {
 
 	const login = async (e) => {
 		e.preventDefault();
-		const username = e.target.username.value;
+		const username = e.target.username.value.toLowerCase();	//converting to lower case so don't have to switch cases when on phone
 		const password = e.target.password.value;
 		if (username && password) {
 
@@ -40,10 +40,10 @@ const Login = () => {
 			<div id="login-form">
 				<form onSubmit={login} className="form-group" method="post">
 					<label className="form-label" htmlFor="username">Username:
-						<input type="text" id="username" name="username" className="form-control" />
+						<input type="text" id="username" name="username" className="form-control" autoComplete="off" />
 					</label>
 					<label className="form-label" htmlFor="password">Password:
-						<input type="password" id="password" name="password" className="form-control" />
+						<input type="password" id="password" name="password" className="form-control" autoComplete="off" />
 					</label>
 				{loginError && 
 					<p className="msg">{loginError}</p>

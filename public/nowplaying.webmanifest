@@ -1,6 +1,6 @@
 {
-	"name": "Now Playing Progressive Web App V2",
-	"short_name": "NP PWA V2",
+	"name": "Now Playing Progressive Web App V1",
+	"short_name": "NP PWA V1",
 	"display": "standalone",
 	"description": "Progressive Web App that lists movies now playing nearby",
 	"scope": "/",
@@ -49,7 +49,5 @@
 			"type": "image/png",
 			"sizes": "512x512"
 		}
-	],
-	"gcm_sender_id": "abc123",
-	"applicationServerKey": "BIkUaEYLnbHdTXJPnXJwHe16IFUQLZHvQvw2EyIfEqpm8sAROFqtkG4pes_0JPyU8LUuODXIJ3KoUR9gLdYrvl0"
+	]
 }

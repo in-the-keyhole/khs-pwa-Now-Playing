@@ -73,6 +73,11 @@ if (PWA) {
 
 	self.addEventListener('push', (e) => {
 		console.log("[Service Worker] Received push notification", e);
+		if (e && e.data) {
+			console.log("Received push event data: "+e.data.text());
+		} else {
+			console.log("Received push event but no data");
+		}
 	});
 }
 
