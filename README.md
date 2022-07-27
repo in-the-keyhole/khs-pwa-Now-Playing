@@ -133,7 +133,7 @@ When changes are ready to be deployed to the live site follow the steps below.
 ## Push Notifications
 
 Push Notifications (not the same thing as ) have not been implemented as of yet. Registering and subscribing to push notifications is stubbed out in /index.js in the service worker registration code block.
-Implementing push notifications is quite involved and faceted. For more documentation refer to this blog: https://medium.com/@a7ul/beginners-guide-to-web-push-notifications-using-service-workers-cb3474a17679
+Implementing push notifications is quite involved and faceted. For more documentation refer to this blog: https://blog.atulr.com/web-notifications/
 
 A test push message can be sent from the browser dev tools. With the Now Playing App open in a browser, open the browser tools panel, click on the 'Application' tab then 'Service Workers' on the left side. Enter a message in the 'Push' textbox and click the 'Push' button. You should see the push message in the console log.
 

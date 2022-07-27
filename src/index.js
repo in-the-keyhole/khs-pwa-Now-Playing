@@ -20,16 +20,16 @@ const closeBtn = document.getElementById('closeBtn');
 let isDownloadDeclined = true;
 
 const isIos = () => {
-  const userAgent = window.navigator.userAgent.toLowerCase();
-  return /iphone|ipad|ipod/.test( userAgent );
+	const userAgent = window.navigator.userAgent.toLowerCase();
+	return /iphone|ipad|ipod/.test( userAgent );
 }
 // Detects if device is in standalone mode
 const isInStandaloneMode = () => ('standalone' in window.navigator) && (window.navigator.standalone);
 
 // Checks if should display install popup notification:
 if (isIos() && !isInStandaloneMode()) {
-  //show install prompt
-  isDownloadDeclined = localStorage.getItem(LS_PREFIX + 'declineAppDownload');
+	//show install prompt
+	isDownloadDeclined = localStorage.getItem(LS_PREFIX + 'declineAppDownload');
 	if (!isDownloadDeclined) {
 		// Remove the 'hidden' class from the install button container.
 		iosInstallDiv.classList.toggle('hidden', false);
@@ -109,49 +109,66 @@ if ("serviceWorker" in navigator) {
 			navigator.serviceWorker
 				.register("/sw.js?pwa="+PWA+"&cache_name="+CACHE_NAME)
 				.then((registration) => {
-					console.log("[Service worker] registration", registration);
-					/*
+					console.log("[Service worker] Registration", registration);
+
+					if (!('Notification' in window)) {
+						console.log("[Service worker] Notifications not supported");
+						return false;
+					}
+
+					if (Notification.permission !== 'granted') {
+						console.log("[Service worker] Notifications not allowed");
+						return false;
+					}
+					
 					//push notification code here
 					return registration.pushManager.getSubscription()
 						.then(async (subscription) => {
 							//if subscription was found, return it and move on
 							if (subscription) {
-								console.log("Got registration subscription", subscription);
+								console.log("[Service worker] Got registration subscription", subscription);
 								return subscription;
 							}
+							
+							// This will be called only once when the service worker is installed for first time.
+							try {
+								//if registration not found, get the server's public key
+								const key = await fetch('./publickey');
+								const vapidPublicKey = await key.text();
+								console.log("[Service worker] Got vapid key", vapidPublicKey);
+								const applicationServerKey = urlB64ToUint8Array(vapidPublicKey);
 
-							//if registration not found, get the server's public key
-							const response = await fetch('./publickey');
-							const vapidPublicKey = await response.text();
-							console.log("got vapid key", vapidPublicKey);
-							//const convertedVapidKey = urlBase64ToUint8Array(vapidPublicKey);
-
-							// Otherwise, subscribe the user (userVisibleOnly allows to specify that we don't plan to
-							// send notifications that don't have a visible effect for the user).
-							return registration.pushManager.subscribe({
-								userVisibleOnly: true,
-								applicationServerKey: vapidPublicKey
-							});
+								const options = { applicationServerKey, userVisibleOnly: true };
+								await registration.pushManager.subscribe(options);
+							} catch (err) {
+								console.log("[Service worker] Registration subscription error", err);
+							}
 						});
-					*/
 				})
-				.then((subscription) => {
-					// subscription part
-					console.log("[Service Worker] subscription", subscription);
-					// fetch('./register', {
-					// 	method: 'post',
-					// 	headers: {
-					// 		'Content-type': 'application/json'
-					// 	},
-					// 	body: JSON.stringify({
-					// 		subscription: subscription
-					// 	}),
-					// });
+				.then(async (subscription) => {
+					//subscription part from above 'await registration.pushManager.subscribe()'
+					if (subscription) {	//subscription can be false if notification are not supported or granted
+						console.log("[Service Worker] Registering subscription to push server", subscription);
+						const SERVER_URL = 'http://localhost:4000/register'
+						const response = await fetch(SERVER_URL, {
+							method: "post",
+							headers: {
+								"Content-Type": "application/json"
+							},
+							body: JSON.stringify(subscription)
+						});
+						console.log("[Service worker] Registering subscription response", response);
+						return response;
+					}
 				})
-				.catch(err => console.log("[Service Worker] not registered", err))
+				.catch(err => console.log("[Service Worker] Not registered", err))
 		});
 	} else {
-		console.log("Not running as PWA, version: "+CACHE_NAME);
+		console.log("****************************************");
+		console.log("********** NOT RUNNING AS PWA **********");
+		console.log("********** DELETING "+CACHE_NAME+" CACHE ***********");
+		console.log("****************************************");
+
 		//delete all localStorage items prefixed with 'PWA_nowPlaying_'
 		Object.keys(localStorage).forEach(function(key){
 			if (key.startsWith('PWA_nowPlaying_') && !key.endsWith('authUser') && !key.endsWith('userHash')) {
@@ -176,9 +193,24 @@ window.addEventListener('offline', updateOnlineStatus);
 updateOnlineStatus();
 
 function updateOnlineStatus(event) {
-  var condition = navigator.onLine ? "online" : "offline";
-  document.body.className = condition;
+	var condition = navigator.onLine ? "online" : "offline";
+	document.body.className = condition;
 }
+
+// urlB64ToUint8Array is a magic function that will encode the base64 public key
+// to Array buffer which is needed by the subscription option
+const urlB64ToUint8Array = base64String => {
+	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+	const base64 = (base64String + padding)
+		.replace(/\-/g, "+")
+		.replace(/_/g, "/");
+	const rawData = atob(base64);
+	const outputArray = new Uint8Array(rawData.length);
+	for (let i = 0; i < rawData.length; ++i) {
+		outputArray[i] = rawData.charCodeAt(i);
+	}
+	return outputArray;
+};
 
 function badgeSupport(version) {
 	document.getElementById('badgingVersion').value = version;

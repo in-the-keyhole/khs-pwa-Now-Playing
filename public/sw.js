@@ -66,20 +66,50 @@ if (PWA) {
 	});
 
 
-	self.addEventListener('activate', (e) => {
+	self.addEventListener('activate', async (e) => {
 		console.log("[Service Worker] Deleting old caches...");
 		e.waitUntil(deleteOldCaches());
+
+		try {
+			const options = {}
+			const subscription = await self.registration.pushManager.subscribe(options)
+			console.log("[Service Worker] Activate subcription:", JSON.stringify(subscription));
+		} catch (err) {
+			console.log("[Service Worker] Activate subcription error", err)
+		}
 	});
 
 	self.addEventListener('push', (e) => {
 		console.log("[Service Worker] Received push notification", e);
 		if (e && e.data) {
 			console.log("Received push event data: "+e.data.text());
+			console.log("Self Registration", self.registration);
+
+			const options = {
+				body: e.data.text(),
+				icon: "/images/icons/icon-32.png",
+			};
+			self.registration.showNotification("NP Notif! "+options.body, options);
 		} else {
 			console.log("Received push event but no data");
 		}
 	});
 }
+
+// urlB64ToUint8Array is a magic function that will encode the base64 public key
+// to Array buffer which is needed by the subscription option
+const urlB64ToUint8Array = base64String => {
+	const padding = "=".repeat((4 - (base64String.length % 4)) % 4);
+	const base64 = (base64String + padding)
+		.replace(/\-/g, "+")
+		.replace(/_/g, "/");
+	const rawData = atob(base64);
+	const outputArray = new Uint8Array(rawData.length);
+	for (let i = 0; i < rawData.length; ++i) {
+		outputArray[i] = rawData.charCodeAt(i);
+	}
+	return outputArray;
+};
 
 const deleteCache = async key => {
 	console.log("[Service Worker] Deleting cache: "+key);
