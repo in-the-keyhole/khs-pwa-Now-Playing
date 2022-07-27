@@ -3,7 +3,7 @@ const search = self.location.search.substr(1).toLowerCase();
 const params = search.split('&');
 
 //if exactly 'pwa=1' appears in the search params, allow PWA functionality
-const PWA = params.includes('pwa=1');
+const PWA = params.includes('pwa=true');
 
 //check for a cache name in search params
 //if not present, default to 'nowPlaying-V1'
@@ -94,6 +94,8 @@ if (PWA) {
 			console.log("Received push event but no data");
 		}
 	});
+} else {
+	console.log("SERVICE WORKER NOT RUNNING AS PWA");
 }
 
 // urlB64ToUint8Array is a magic function that will encode the base64 public key
