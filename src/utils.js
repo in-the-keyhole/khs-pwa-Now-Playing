@@ -45,7 +45,6 @@ export function setBadge(value) {
 	}
 }
 
-
 function clearBadge() {
 	if (navigator.clearAppBadge) {
 		navigator.clearAppBadge();
@@ -79,8 +78,9 @@ export function getBrowser() {
 
 /*
 	Simple login function to check user creds against db (or in this case, json file)
-	If user is offline, fetch call will error out and fall thru the catch function
-	In the catch, user creds are checked against local storage userHash
+	If user is online, fetch call will check db (or other location) for user creds
+	If there is a server error, catch block will execute and local storage hash token will be checked
+	If user is offline, local storage hash token is checked
 	If the userHash exists and matches the entered username & password, user is allowed in
 	Else, user is not allowed in
 
@@ -93,43 +93,46 @@ export async function authUser(username, password) {
 	let validUser = false;
 
 	if (navigator.onLine) {
+		//if user is online, check db or other location for user creds
 		validUser = await fetch('/users.json')
 			.then(response => response.json())
 			.then(userData => {
 				const user = userData.filter(u => u.username === username && u.password === password)[0];
 				if (user) {
-					console.log("User auth via fetch call. Set hash token");
+					console.log("[AuthUser] Login via fetch call. Set hash token");
 					localStorage.setItem(LS_PREFIX+'authUser', true);
 					localStorage.setItem(LS_PREFIX+'userHash', userHash);
 					return true;
 				} else {
 					return false;
 				}
-			}).catch(e => {
-				console.log("Fetch users error", e);
-				console.log("Login error, may be in offline mode, checking user hash...");
+			}).catch(err => {
+				//if server error occurs, check local storage hash token
+				console.log("[AuthUser] Fetch users error", err);
 
 				//if here, user may be offline. check username and password against local storage userHash
 				const storedUserHash = localStorage.getItem(LS_PREFIX+'userHash');
-				console.log("storedUserHash: "+storedUserHash+", userHash: "+userHash);
+				console.log("[AuthUser] checking user hash, storedUserHash: "+storedUserHash+", userHash: "+userHash);
 				if (storedUserHash && storedUserHash === userHash) {
-					console.log("User auth via hash token");
+					console.log("[AuthUser] Login via hash token");
 					return true;
 				} else {
 					//user hash not found or some other error
+					console.log("[AuthUser] Unable to login online");
 					return false;
 				}
 			});
 	} else {
-		console.log("User is in offline mode, checking user hash...");
 		//if here, user is offline. check username and password against local storage userHash
+		console.log("[AuthUser] User is in offline mode, checking user hash...");
 		const storedUserHash = localStorage.getItem(LS_PREFIX+'userHash');
-		console.log("storedUserHash: "+storedUserHash+", userHash: "+userHash);
+		console.log("[AuthUser] storedUserHash: "+storedUserHash+", userHash: "+userHash);
 		if (storedUserHash && storedUserHash === userHash) {
-			console.log("User auth via hash token");
+			console.log("[AuthUser] User auth via hash token");
 			validUser = true;
 		} else {
 			//user hash not found or some other error
+			console.log("[AuthUser] Unable to login offline");
 			validUser = false;
 		}
 	}

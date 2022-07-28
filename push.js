@@ -1,4 +1,3 @@
-//exact copy of full example code from (https://medium.com/izettle-engineering/beginners-guide-to-web-push-notifications-using-service-workers-cb3474a17679)
 const express = require('express');
 const cors = require('cors');
 const path = require('path');
@@ -13,6 +12,7 @@ app.use(bodyParser.urlencoded({	//handle POST request from push-ui
   extended: true
 }));
 
+//simple ui for easily composing and sending a push notification
 const pushUiHtml = `
 <h1>Push notification server running</h1>
 <form method="post" action="/">
@@ -30,10 +30,12 @@ const saveToDatabase = async subscription => {
 	dummyDb.subscription = subscription;
 };
 
+//default view rendered when accessing localhost:4000 in browser, shows push ui
 app.get('/', (req, res) => {
 	res.send(pushUiHtml)
 });
 
+//handler for post request coming from push ui
 app.post('/', (req, res) => {
 	const message = req.body.message;
 	console.log("Received message submit POST request, message: "+message);
@@ -41,7 +43,7 @@ app.post('/', (req, res) => {
 	res.send(pushUiHtml + "<h2>"+result+"</h2>");
 });
 
-// The new /save-subscription endpoint
+//handler for post call to /register from PWA
 app.post('/register', async (req, res) => {
 	console.log("Received registration request", req.body);
 	console.log("\n");
@@ -49,6 +51,8 @@ app.post('/register', async (req, res) => {
 	await saveToDatabase(subscription); //Method to save the subscription to Database
 	res.json({ action: 'success' });
 });
+
+
 const vapidKeys = {
 	publicKey: 'BIkUaEYLnbHdTXJPnXJwHe16IFUQLZHvQvw2EyIfEqpm8sAROFqtkG4pes_0JPyU8LUuODXIJ3KoUR9gLdYrvl0',
 	privateKey: 'et-k3Un3PEbEwmypdX4cdzEARhU8f30w9YPXKwQMoZc'
@@ -75,12 +79,12 @@ const sendNotification = (dataToSend) => {
 	}
 }
 
-//route to test send notification
+//handler for route to test send notification via localhost:4000/send-notification?m={message}
 app.get('/send-notification', (req, res) => {
 	const message = req.query.m;
 	console.log("Received send-notification GET request, message: "+message);
 	const result = sendNotification(message);
-	res.json(result);
+	res.json({message: result});
 });
 
 app.listen(port, () => console.log(`\nPush notification server listening on port ${port}\n`));

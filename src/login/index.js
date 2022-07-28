@@ -14,14 +14,8 @@ const Login = () => {
 		const username = e.target.username.value.toLowerCase();	//converting to lower case so don't have to switch cases when on phone
 		const password = e.target.password.value;
 		if (username && password) {
-
-			//if online, check username and password against db
-			//if user is found, set local storage token of md5(username + password + SALT)
 			const authResponse = await authUser(username, password);
-
-			console.log("auth response", authResponse);
-
-			//if offline, check if local storage token exists and matches username & password combo
+			console.log("[Login] auth response", authResponse);
 
 			if (authResponse) {
 				localStorage.setItem(LS_PREFIX+'authUser', true);

@@ -132,10 +132,37 @@ When changes are ready to be deployed to the live site follow the steps below.
 
 ## Push Notifications
 
-Push Notifications (not the same thing as ) have not been implemented as of yet. Registering and subscribing to push notifications is stubbed out in /index.js in the service worker registration code block.
 Implementing push notifications is quite involved and faceted. For more documentation refer to this blog: https://blog.atulr.com/web-notifications/
 
-A test push message can be sent from the browser dev tools. With the Now Playing App open in a browser, open the browser tools panel, click on the 'Application' tab then 'Service Workers' on the left side. Enter a message in the 'Push' textbox and click the 'Push' button. You should see the push message in the console log.
+Push notifications have been implemented but only works from localhost thus far. A separate push notification server will have to be set up for this to work properly in a live production environment.
+
+The above blog explains the what and why in much more detail than will be documented here so only an overview will be included.
+
+-- The following is an overview of the implementation for push notifications for the Now Playing site.
+
+In `index.js` the service worker file (`sw.js`) is registered. The call to `register()` returns a promise with a registration object that can then be used. First, a check for Notifications is done. If Notifications are not supported on the device or the user has not allowed Notifications, the code execution halts and nothing more can be done. If Notifications are supported and allowed, subscribing and registering continue.
+
+When subscribing to the push server, a public key is retrieved and passed along. See the above mentioned article for a better explanation of what the public key is and how to generate it. In this PWA, the public key is stored in a text file at /public/publickey. The public key is sent to the `registration.pushManager.subscribe` method. This method returns a promise with a subscription object that then needs to be registered and saved to a db on the push server.
+
+The service worker (`sw.js`) has an event listener for a 'push' event. When a push event is received with a message, a notification call is executed and a notification should appear (again, if supported and allowed). Push notifications can be sent even when the Now Playing site is not opened in a browser or standalone app.
+
+-- The following is an overview of the implementation for push notifications for the push server which is at a different server address than the Now Playing site.
+
+In this codebase, the push notification server file is `push.js`. It can be in the same directory as the rest of the Now Playing app but it does not run at the same server address. `push.js` is run at http://localhost:4000. To run the push server, open a terminal window to the khs-pwa-now-playing directory and run `node push.js`. You can then view http://localhost:4000 in a browser and see a simple UI for the push server.
+
+In `push.js`, the necessary modules are retrieved via require(). Some route handlers are set up to execute when various endpoints are hit, notably the default GET '/' which displays the simple UI in a browser when viewing localhost:4000. A POST to '/' displays the simple UI as well as sending the composed message and displaying a response.
+
+A POST handler to '/register' is called by the Now Playing app. This handler should save the user subscription object to a database. This app currently only saves the subscription to runtime memory. In a live production app this database call would be made.
+
+The public and private keys are used in push.js for the webpush module. The keys can be hardcoded directly in push.js or stored and retrieved via other methods.
+
+Lastly, the push server listens on localhost:4000.
+
+For a push notification to be received by the Now Playing app, both the app and push server must be running. The user must have notifications supported and allowed. The app must register and subscribe to the push server. You should see a 'Received registration request' console log in the terminal window where the push server is running when a user subscribes and registers to the push server. Now a push notification can be sent.
+
+From http://localhost:4000 you should see a simple UI with the text 'Push notification server running', a textbox and a submit button. Enter a message and click 'Send'. You should see more console logs in the terminal window and a message in the UI. If everything is successful you should see the notification appear on the device.
+
+A test push message can also be sent from the browser dev tools. With the Now Playing App open in a browser, open the browser tools panel, click on the 'Application' tab then 'Service Workers' on the left side. Enter a message in the 'Push' textbox and click the 'Push' button. You should see the push message in the console log and a notification should appear if enabled.
 
 
 ## App Badges

@@ -121,7 +121,6 @@ if ("serviceWorker" in navigator) {
 						return false;
 					}
 					
-					//push notification code here
 					return registration.pushManager.getSubscription()
 						.then(async (subscription) => {
 							//if subscription was found, return it and move on
@@ -132,12 +131,13 @@ if ("serviceWorker" in navigator) {
 							
 							// This will be called only once when the service worker is installed for first time.
 							try {
-								//if registration not found, get the server's public key
+								//if subscription not found, get the server's public key
 								const key = await fetch('./publickey');
 								const vapidPublicKey = await key.text();
 								console.log("[Service worker] Got vapid key", vapidPublicKey);
 								const applicationServerKey = urlB64ToUint8Array(vapidPublicKey);
 
+								//subscribe the user to push notification api
 								const options = { applicationServerKey, userVisibleOnly: true };
 								await registration.pushManager.subscribe(options);
 							} catch (err) {
@@ -149,7 +149,8 @@ if ("serviceWorker" in navigator) {
 					//subscription part from above 'await registration.pushManager.subscribe()'
 					if (subscription) {	//subscription can be false if notification are not supported or granted
 						console.log("[Service Worker] Registering subscription to push server", subscription);
-						const SERVER_URL = 'http://localhost:4000/register'
+						const SERVER_URL = 'http://localhost:4000/register';
+						//post the user subscription to the push server db
 						const response = await fetch(SERVER_URL, {
 							method: "post",
 							headers: {
