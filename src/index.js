@@ -149,7 +149,9 @@ if ("serviceWorker" in navigator) {
 					//subscription part from above 'await registration.pushManager.subscribe()'
 					if (subscription) {	//subscription can be false if notification are not supported or granted
 						console.log("[Service Worker] Registering subscription to push server", subscription);
-						const SERVER_URL = 'http://localhost:4000/register';
+
+						//make SERVER_URL localhost IP address so remote device can connect
+						const SERVER_URL = 'http://192.168.1.189:4000/register';
 						//post the user subscription to the push server db
 						const response = await fetch(SERVER_URL, {
 							method: "post",
