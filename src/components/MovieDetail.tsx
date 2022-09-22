@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useQuery } from '@apollo/client';
 import { MOVIE_DETAIL } from '../graphql/queries';
 import { CastMember, Movie } from '../model';
@@ -9,9 +9,12 @@ import { BackButton } from './BackButton';
 import ScrollToTop from './ScrollToTop';
 
 import './MovieDetail.css';
+import { toast } from 'react-toastify';
+import { OfflineMessage } from './Toast';
 
 function MovieDetail() {
     const { id } = useParams();
+    const navigate = useNavigate();
 
     const [movie, setMovie] = useState<Movie | undefined>();
     const [error, setError] = useState<string | undefined>();
@@ -22,12 +25,20 @@ function MovieDetail() {
             setMovie(data.movie);
         },
         onError: (err) => {
-            setError("An error occurred querying a movie: " + err);
+            var isOnline = navigator.onLine;
+            navigate(-1);
+            if (!isOnline) {
+                toast.error(OfflineMessage, {
+                    toastId: 'offline',
+                    autoClose: false
+                });
+            }
+            setError("An error occurred querying a movie.  Please try again.");
         }
     });
 
     if (loading) return <p>Loading...</p>;
-    if (error) return <p>Error : {error}</p>;
+    if (error) return <p>{error}</p>;
 
     const releaseDate = movie?.releaseDate ? moment(new Date(movie?.releaseDate)).format('MMM DD, yyyy') : undefined;
     const productionCountries = movie?.productionCountries.map(country => country).join(', ');
