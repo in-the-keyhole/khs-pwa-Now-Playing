@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<svg viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <g transform="matrix(0, 0, 0, 0, 0, 0)" id="b705bd52-8887-43f0-8053-20ff31ebfac8"/>
+  <g transform="matrix(1, 0, 0, 1, 96, 96)" id="1ee883ae-493b-4a4c-9d46-7559d42e3ccc">
+    <rect style="stroke: none; stroke-width: 1; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke" x="-96" y="-96" rx="0" ry="0" width="192" height="192"/>
+  </g>
+  <g transform="matrix(1.99, 0, 0, 1.16, 95.339996, 116.480003)" id="a826a4ee-28f9-407f-91f6-4639e1dbaaaf">
+    <rect style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke" x="-33.085" y="-33.085" rx="0" ry="0" width="66.17" height="66.17"/>
+  </g>
+  <g transform="matrix(1.91, -0.49, 0.09, 0.37, 89.739998, 49.57)" id="152c21f6-3abb-4bf6-b0fc-7779b9dbd2ee">
+    <rect style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(255,255,255); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke" x="-33.085" y="-33.085" rx="0" ry="0" width="66.17" height="66.17"/>
+  </g>
+  <g transform="matrix(0.111542, -0.046477, -0.173987, -0.429168, 93.376572, 47.008999)" id="3742c461-8c9f-4a82-aac1-4f0f017c7944" style="">
+    <rect style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke" x="-33.085" y="-33.085" rx="0" ry="0" width="66.17" height="66.17"/>
+  </g>
+  <g transform="matrix(0.12, -0.05, -0.180587, -0.445447, 110.492256, 42.490005)" id="3742c461-8c9f-4a82-aac1-4f0f017c7944" style="">
+    <rect style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke" x="-40.233" y="-33.157" width="66.17" height="66.17"/>
+  </g>
+  <g transform="matrix(0.12, -0.05, -0.193182, -0.476515, 125.659691, 38.062214)" id="3742c461-8c9f-4a82-aac1-4f0f017c7944" style="">
+    <rect style="stroke: rgb(0,0,0); stroke-width: 0; stroke-dasharray: none; stroke-linecap: butt; stroke-dashoffset: 0; stroke-linejoin: miter; stroke-miterlimit: 4; fill: rgb(0,0,0); fill-rule: nonzero; opacity: 1;" vector-effect="non-scaling-stroke" x="-33.085" y="-33.085" rx="0" ry="0" width="66.17" height="66.17"/>
+  </g>
+  <path d="M 48.516 91.745 L 62.974 91.745 L 81.842 119.464 L 81.842 91.745 L 96.436 91.745 L 96.436 141.852 L 81.842 141.852 L 63.077 114.337 L 63.077 141.852 L 48.516 141.852 Z M 106.65 91.745 L 132.388 91.745 Q 140.796 91.745 144.983 95.744 Q 149.17 99.743 149.17 107.125 Q 149.17 114.713 144.607 118.986 Q 140.044 123.258 130.679 123.258 L 122.202 123.258 L 122.202 141.852 L 106.65 141.852 Z M 122.202 113.107 L 125.996 113.107 Q 130.474 113.107 132.285 111.552 Q 134.097 109.997 134.097 107.57 Q 134.097 105.211 132.524 103.571 Q 130.952 101.93 126.611 101.93 L 122.202 101.93 Z" style="text-transform: uppercase; white-space: pre;"/>
+</svg>

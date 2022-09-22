@@ -1,213 +1,38 @@
-*, *::before, *::after {
-	box-sizing: border-box;
+.App {
+  text-align: center;
 }
 
-body {
-	font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-	background-color: #000 !important;
-	color: #fff !important;
-}
-h2 {
-	font-size: 2rem;
-	margin: 0;
-	text-transform: uppercase;
-}
-h3 {
-	font-size: 1.8rem;
-}
-h4 {
-	font-size: 1.3rem;
-}
-a {
-	color: #17a2b8;
-	text-decoration: none;
-}
-a:hover {
-	color: #1ebcc5;
-	text-decoration: none;
+.App-logo {
+  height: 40vmin;
+  pointer-events: none;
 }
 
-
-header h3 {
-	margin: 5px 0 0 0;
-}
-header {
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	margin: 15px 0;
-	position: relative;
-}
-header > div {
-	display: flex;
-	position: relative;
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
 }
 
-header input {
-	background: #000;
-	color: #fff;
-	margin: 0px 20px;
-	padding: 5px;
-}
-header input:disabled {
-	opacity: 0.5;
-}
-
-header a:hover {
-	border: 1px solid rgb(238, 238, 238);
-	color: white;
-	cursor: pointer;
-}
-#main-nav {
-	display: none;
-	position: absolute;
-	right: 45px;
-	z-index: 1;
-}
-#main-nav a {
-	background-color: black;
-	border: 1px solid transparent;
-	color: white;
-	display: block;
-	font-weight: bold;
-	line-height: 21px;
-	padding: 10px;
-	text-decoration: none;
-}
-#main-nav a:hover {
-	background-color: white;
-	color: black;
-}
-header button {
-	background-color: black;
-	border: none;
-	color: white;
-	font-size: 40px;
-	line-height: 25px;
-	padding: 10px;
-}
-header button:hover {
-	cursor: pointer;
-	background-color: gray;
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
-.msg {
-	margin: 15px;
-	text-align: center;
+.App-link {
+  color: #61dafb;
 }
 
-.movie-container {
-	margin: 0 15px;
-}
-
-.movie-container ul {
-	display: flex;
-	flex-flow: row wrap;
-	justify-content: center;
-	list-style: none;
-	margin: 0;	
-	padding: 0;
-}
-
-.movie-container li {
-	position: relative;
-}
-
-
-.movie {
-	padding: 5px;
-	margin-top: 10px;
-	font-weight: bold;
-	text-align: center;
-	cursor: pointer;
-}
-
-.movie img {
-	display: block;
-}
-
-.movie-detail {
-	min-height: 350px;
-	position: relative;
-}
-.movie-detail img {
-	min-height: 200px;
-	width: 100%;
-}
-.movie-container .movie-detail img {
-	max-width: 300px;
-}
-
-.movie-detail .info {
-	bottom: 0px;
-	padding: 30px;
-	position: absolute;
-}
-
-.movie-detail span {
-	position: absolute;
-	top: 10px;
-	right: 20px;
-	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	font-size: 2em;
-	cursor: pointer;
-}
-
-.close {
-	height: 50px;
-	margin: 10px;
-	position: absolute;
-	right: 0;
-	width: 50px;
-}
-
-.close::before {
-	-webkit-transform: rotate(45deg);
-	-moz-transform: rotate(45deg);
-	-ms-transform: rotate(45deg);
-	-o-transform: rotate(45deg);
-	transform: rotate(45deg);
-}
-
-.close::after {
-	-webkit-transform: rotate(-45deg);
-	-moz-transform: rotate(-45deg);
-	-ms-transform: rotate(-45deg);
-	-o-transform: rotate(-45deg);
-	transform: rotate(-45deg);
-}
-
-.close::before,
-.close::after {
-	content: '';
-	position: absolute;
-	height: 4px;
-	width: 100%;
-	top: 50%;
-	left: 0;
-	margin-top: -2px;
-	background: #fff;
-	border-radius: 5px;
-}
-
-.close:hover::before,
-.close:hover::after {
-	background: #1ebcc5;
-}
-
-
-@media only screen and (max-width: 600px) {
-	header {
-		flex-direction: column;
-	}
-	header h2 {
-		text-align: center;
-	}
-	header div {
-		justify-content: space-between;
-		margin: 10px;
-	}
-	.movie-detail .info {
-		bottom: -300px;
-	}
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
