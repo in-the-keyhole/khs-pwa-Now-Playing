@@ -67,11 +67,13 @@ function registerValidSW(swUrl: string, config?: Config) {
       // serviceWorkerRegistrationEnhancements(registration, config);
       // check for updates every minute
       setInterval(() => {
-        toast.info("Checking for updates...", {
-          toastId: 'checking-for-update',
-        });
-        console.debug('Checking for updates...');
-        registration.update();
+        if (navigator.onLine) {
+          toast.info("Checking for updates...", {
+            toastId: 'checking-for-update',
+          });
+          console.debug('Checking for updates...');
+          registration.update();
+        }
       }, 1000 * 60 * 1);
 
       registration.onupdatefound = () => {
