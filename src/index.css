@@ -79,7 +79,9 @@ a {
 }
 
 .item:not(.button) a:hover,
-.item a:hover::after {
+.item a:hover::after,
+.item span,
+.toggle span {
   color: #ccc
 }
 
@@ -90,7 +92,8 @@ a {
   align-items: center
 }
 
-.menu li a {
+.menu li a,
+.menu li span {
   display: block;
   padding: 10px 5px
 }
