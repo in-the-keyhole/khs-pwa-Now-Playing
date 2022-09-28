@@ -66,7 +66,7 @@ registerRoute(
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
       // least-recently used images are removed.
-      new ExpirationPlugin({ maxEntries: 50 }),
+      new ExpirationPlugin({ maxEntries: 250 }),
     ],
   })
 );
@@ -81,7 +81,7 @@ registerRoute(
     plugins: [
       // Ensure that once this runtime cache reaches a maximum size the
       // least-recently used images are removed.
-      new ExpirationPlugin({ maxEntries: 50 }),
+      new ExpirationPlugin({ maxEntries: 250 }),
     ],
   })
 );
